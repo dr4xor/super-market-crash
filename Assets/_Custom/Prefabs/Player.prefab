@@ -83,6 +83,7 @@ GameObject:
   - component: {fileID: 5167698057565085135}
   - component: {fileID: 4900942330372223374}
   - component: {fileID: 9057464639772078941}
+  - component: {fileID: 8100277933657797801}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -251,6 +252,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 585343f8c46eb3947bf017cb4a027854, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CartCollisionHandler
+  minVelocityForHit: 8
 --- !u!114 &9057464639772078941
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -263,6 +265,45 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dab9a478a0649dc4c8c35c18dca8390e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CarCollisions
+--- !u!114 &8100277933657797801
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6224988939651710230}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05c27d28f677b14458631757a0f0f54c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerAnimationController
+  runningSpeedThreshold: 1
+  isRunningParamName: isRunningHoldingBow
+  velocityToAnimSpeedCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0.6
+      outSlope: 0.6
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 10
+      value: 7
+      inSlope: 0.6
+      outSlope: 0.6
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  grabItemParam: isGrabbing
 --- !u!1 &6512023204539800105
 GameObject:
   m_ObjectHideFlags: 0
@@ -701,6 +742,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14d2e99939eb9a84ea3155eb0dbbb1d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CartItemsContainer
+  shakeDuration: 0.5
+  shakeStrength: 0.1
+  shakeVibrato: 10
+  shakeRandomness: 90
+  shakeFadeOut: 0
+  shakeIgnoreTimeScale: 1
+  shakeRotationStrength: 10
+  shakeRotationVibrato: 10
+  shakeRotationRandomness: 90
+  shakeRotationFadeOut: 0
+  shakeRotationIgnoreTimeScale: 1
+  shakeScaleStrength: 0.1
+  shakeScaleVibrato: 10
+  shakeScaleRandomness: 90
+  shakeScaleFadeOut: 0
+  shakeScaleIgnoreTimeScale: 1
 --- !u!1001 &7789721327700730214
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -719,7 +776,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 33d96bc0fbb547a40b435e4c6da868c3, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1.528
+      value: -1.272
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 33d96bc0fbb547a40b435e4c6da868c3, type: 3}
       propertyPath: m_LocalRotation.w

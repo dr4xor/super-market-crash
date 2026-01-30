@@ -41,6 +41,7 @@ public class PlayerInputReceiver : MonoBehaviour
 
     private void OnWest(InputValue inputValue)
     {
-        
+Debug.Log("OnWest");
+        _cart.PlayerAnimationController.GrabItem();
     }
 }

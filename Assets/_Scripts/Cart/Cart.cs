@@ -37,8 +37,9 @@ public class Cart : MonoBehaviour
     private bool _isDashing = false;
 
     private CartItemsContainer _cartItemsContainer;
-
     public CartItemsContainer CartItemsContainer => _cartItemsContainer;
+    private PlayerAnimationController _playerAnimationController;
+    public PlayerAnimationController PlayerAnimationController => _playerAnimationController;
 
 
     private void Start()
@@ -50,6 +51,8 @@ public class Cart : MonoBehaviour
         // Recommended for drift: low drag so our code controls the feel
         //if (_rigidbody.linearDamping < 0.5f)
         //    _rigidbody.linearDamping = 0.5f;
+
+        _playerAnimationController = GetComponent<PlayerAnimationController>();
     }
 
     private void FixedUpdate()
