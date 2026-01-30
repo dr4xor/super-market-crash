@@ -2,11 +2,13 @@ using System.Collections.Generic;
 using System.Linq;
 using ScriptableObjects;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Scripts.Supermarket
 {
     public class ShelfController : MonoBehaviour
     {
+        [SerializeField] private Image image;
         [SerializeField] private List<Transform> shelfItemPositions;
         
         public ItemTemplate itemTemplate;
@@ -16,6 +18,7 @@ namespace Scripts.Supermarket
         
         private void Start()
         {
+            image.sprite = itemTemplate.sprite;
             for (var i = 0; i < shelfItemCount; i++)
             {
                 var itemVisual = Instantiate(itemTemplate.itemPrefab, shelfItemPositions[i].position, Quaternion.identity);
