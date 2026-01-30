@@ -8,24 +8,27 @@ namespace Scripts.Supermarket
     public class ShelfController : MonoBehaviour
     {
         [SerializeField] private List<Transform> shelfItemPositions;
-        [SerializeField] private ItemTemplate itemTemplate;
-
+        
+        public ItemTemplate itemTemplate;
         public int shelfItemCount;
         
-        private Dictionary<Transform, ItemTemplate> _shelfItems = new();
+        private List<GameObject> _shelfItems = new();
         
         private void Start()
         {
-            for (var i = 0; i < shelfItemPositions.Count; i++)
+            for (var i = 0; i < shelfItemCount; i++)
             {
-              _shelfItems.Add(shelfItemPositions[i], itemTemplate);  
-            }  
+                var itemVisual = Instantiate(itemTemplate.itemPrefab, shelfItemPositions[i].position, Quaternion.identity);
+                _shelfItems.Add(itemVisual);  
+            }
         }
         
-        public bool TryGetItemTemplate(out ItemTemplate item)
+        public int RemainingItems => _shelfItems.Count;
+
+        public bool TryTakeItem(out ItemTemplate item)
         {
-            var shelfPosition = _shelfItems.Keys.First();
-            return _shelfItems.TryGetValue(shelfPosition, out item);
+            item = itemTemplate;
+            return _shelfItems.Any();
         }
     }
 }

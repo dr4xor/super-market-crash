@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee1d4a3e2897688469be870ef7e85864, type: 3}
   m_Name: Banana
   m_EditorClassIdentifier: Assembly-CSharp::ScriptableObjects.ItemTemplate
-  itemName: 
-  itemPrefab: {fileID: 0}
-  sprite: {fileID: 0}
-  price: 0
-  weight: 0
+  itemName: Banane
+  itemPrefab: {fileID: 5646568448768669851, guid: bc0a67a332fb2c248a1c76c5f9330014, type: 3}
+  sprite: {fileID: 21300000, guid: d342ee35dc3b02a4199c2e7150e95efc, type: 3}
+  price: 2
+  weight: 3
