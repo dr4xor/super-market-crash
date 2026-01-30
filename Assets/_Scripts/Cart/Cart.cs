@@ -1,0 +1,179 @@
+using System;
+using UnityEngine;
+
+public class Cart : MonoBehaviour
+{
+    [SerializeField] private float fixedYPosition = 0.1f;
+    [SerializeField] private float forceFactor = 10f;
+    [SerializeField] private float forceFactorBrake = 10f;
+    [SerializeField] private Transform toRotate;
+    [SerializeField] private float rotationSpeed = 10f;
+    [SerializeField] private float maxSpeed = 6f;
+    //[SerializeField] private float acceleration = 8f;
+    [SerializeField] private AnimationCurve dashMoveCurve;
+    [SerializeField] private float dashTime = 0.5f;
+    [SerializeField] private float forceDashing = 2f;
+    [SerializeField] private float forceFactorBrakeDashing = 2f;
+    [SerializeField] private float maxSpeedDashing = 2f;
+    
+    /*
+    [Header("Movement")]
+    [SerializeField] private float _maxSpeed = 6f;
+    [Tooltip("How quickly the cart reaches target speed. Lower = more slidey.")]
+    [SerializeField] private float _acceleration = 8f;
+    [Tooltip("How quickly velocity direction follows input. Lower = more drift when turning.")]
+    [SerializeField] private float _turnResponsiveness = 6f;
+
+    [Header("Rotation (optional)")]
+    [Tooltip("If > 0, cart model rotates toward movement direction.")]
+    [SerializeField] private float _rotationFollowSpeed = 5f;
+    */
+
+    private Vector3 _moveInput;
+    private Rigidbody _rigidbody;
+    private float _curYRotation;
+
+    private float _dashS = 0f;
+    private bool _isDashing = false;
+
+    private CartItemsContainer _cartItemsContainer;
+    public CartItemsContainer CartItemsContainer => _cartItemsContainer;
+    private PlayerAnimationController _playerAnimationController;
+    public PlayerAnimationController PlayerAnimationController => _playerAnimationController;
+
+
+    private void Start()
+    {
+        _rigidbody = GetComponent<Rigidbody>();
+
+        _cartItemsContainer = GetComponentInChildren<CartItemsContainer>();
+
+        // Recommended for drift: low drag so our code controls the feel
+        //if (_rigidbody.linearDamping < 0.5f)
+        //    _rigidbody.linearDamping = 0.5f;
+
+        _playerAnimationController = GetComponent<PlayerAnimationController>();
+    }
+
+    private void FixedUpdate()
+    {
+         float dashFactor = handleDash();
+        
+         Vector3 desiredVelocity = _moveInput * Mathf.Lerp(maxSpeed, maxSpeedDashing, dashFactor);
+
+         Vector3 forceDelta = desiredVelocity - _rigidbody.linearVelocity;
+
+         float angleBetweenDeltaAndVelocity = Vector3.Angle(forceDelta, _rigidbody.linearVelocity);
+
+         float usedForceFactor = Mathf.Lerp(forceFactor, forceDashing, dashFactor);
+
+         if (angleBetweenDeltaAndVelocity > 90f)
+         {
+            usedForceFactor = Mathf.Lerp(forceFactorBrake, forceFactorBrakeDashing, dashFactor);
+         }
+
+         // Add force to push the rigidboody towards the desired velocity
+         _rigidbody.AddForce(forceDelta * usedForceFactor);
+
+
+        //_rigidbody.AddForce(_moveInput * forceFactor);
+
+// Limit the velocity to the max speed
+        Vector3 currentVelocity = _rigidbody.linearVelocity;
+        float currentSpeed = currentVelocity.magnitude;
+        if (currentSpeed > maxSpeed)
+        {
+            _rigidbody.linearVelocity = currentVelocity.normalized * maxSpeed;
+        }
+
+        if (_moveInput.magnitude > 0.01f)
+        {
+            float targetRotaion = Mathf.Atan2(_moveInput.x, _moveInput.z) * Mathf.Rad2Deg;
+
+            Quaternion targetRotation = Quaternion.Euler(0f, targetRotaion, 0f);
+
+            toRotate.rotation = Quaternion.RotateTowards(toRotate.rotation, targetRotation, rotationSpeed * Time.fixedDeltaTime);
+        }
+
+
+        // Force clamp the rotation of the rigidbody to be flat
+        //_rigidbody.rotation = Quaternion.Euler(0f, _rigidbody.rotation.eulerAngles.y, 0f);
+
+        //_rigidbody.position = new Vector3(_rigidbody.position.x, fixedYPosition, _rigidbody.position.z);
+
+    }
+
+    private float handleDash()
+    {
+        if (!_isDashing)
+        {
+            return 0f;
+        }
+
+        _dashS += Time.fixedDeltaTime / dashTime;
+        float dashCurveValue = dashMoveCurve.Evaluate(_dashS);
+        
+        return dashCurveValue;
+    }
+
+    public void ProvideMoveDirection(Vector2 moveDirection)
+    {
+        _moveInput = new Vector3(moveDirection.x, 0f, moveDirection.y);
+    }
+
+    public void PerformDash()
+    {
+        _isDashing = true;
+        _dashS = 0f;
+    }
+/*
+    private void performDriftMovement()
+    {
+        // Map stick input to world XZ (Y = up). Magnitude = how much throttle.
+        Vector3 inputWorld = new Vector3(_moveInput.x, 0f, _moveInput.y);
+        float inputMagnitude = inputWorld.magnitude;
+        if (inputMagnitude > 1f)
+            inputMagnitude = 1f;
+
+        Vector3 desiredDirection = inputMagnitude > 0.01f ? inputWorld.normalized : Vector3.zero;
+        float desiredSpeed = inputMagnitude * _maxSpeed;
+        Vector3 desiredVelocity = desiredDirection * desiredSpeed;
+
+        Vector3 currentVelocity = _rigidbody.linearVelocity;
+        currentVelocity.y = 0f; // keep vertical velocity (gravity/jumps) untouched
+
+        // Accelerate magnitude: reach target speed over time
+        float currentSpeed = currentVelocity.magnitude;
+        float newSpeed = Mathf.MoveTowards(currentSpeed, desiredSpeed, _acceleration * Time.fixedDeltaTime);
+
+        // Turn toward desired direction with lag (this creates the drift)
+        Vector3 newDirection;
+        if (newSpeed < 0.01f || desiredSpeed < 0.01f)
+        {
+            newDirection = desiredDirection.sqrMagnitude > 0.01f ? desiredDirection : (currentSpeed > 0.01f ? currentVelocity.normalized : desiredDirection);
+        }
+        else if (currentSpeed < 0.01f)
+        {
+            newDirection = desiredDirection; // from standstill, go straight toward input
+        }
+        else
+        {
+            Vector3 currentDirection = currentVelocity.normalized;
+            newDirection = Vector3.Slerp(currentDirection, desiredDirection, _turnResponsiveness * Time.fixedDeltaTime).normalized;
+        }
+
+        Vector3 newVelocity = newDirection * newSpeed;
+        newVelocity.y = _rigidbody.linearVelocity.y;
+        _rigidbody.linearVelocity = newVelocity;
+
+        // Optional: rotate cart to face movement for extra juice
+        if (_rotationFollowSpeed > 0f && newVelocity.sqrMagnitude > 0.01f)
+        {
+            Vector3 flatVel = newVelocity;
+            flatVel.y = 0f;
+            Quaternion targetRotation = Quaternion.LookRotation(flatVel, Vector3.up);
+            _rigidbody.rotation = Quaternion.Slerp(_rigidbody.rotation, targetRotation, _rotationFollowSpeed * Time.fixedDeltaTime);
+        }
+    }
+*/
+}
