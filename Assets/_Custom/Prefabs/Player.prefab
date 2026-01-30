@@ -154,7 +154,7 @@ MonoBehaviour:
   forceFactorBrake: 4
   toRotate: {fileID: 8133013252121077013}
   rotationSpeed: 400
-  maxSpeed: 10
+  maxSpeed: 16
   dashMoveCurve:
     serializedVersion: 2
     m_Curve:
@@ -825,6 +825,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 33d96bc0fbb547a40b435e4c6da868c3, type: 3}
       propertyPath: m_Name
       value: Rogue_Hooded
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 33d96bc0fbb547a40b435e4c6da868c3, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7214371169738337839, guid: 33d96bc0fbb547a40b435e4c6da868c3, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
