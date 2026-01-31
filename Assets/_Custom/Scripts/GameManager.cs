@@ -8,14 +8,14 @@ public class GameManager : MonoBehaviour
     [SerializeField] private ItemDatabase itemDatabase;
 
     [Header("Prefabs")]
-    [SerializeField] private UI_Main uiMainPrefab;
+    [SerializeField] private UI_Manager uiManagerPrefab;
 
-    private UI_Main _uiMainInstance;
+    private UI_Manager _uiManagerInstance;
     private readonly bool[] _usedPlayerIds = new bool[4];
 
     private void Start()
     {
-        EnsureUIMainExists();
+        EnsureUIManagerExists();
     }
 
     /// <summary>
@@ -32,8 +32,8 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        EnsureUIMainExists();
-        if (_uiMainInstance == null) return;
+        EnsureUIManagerExists();
+        if (_uiManagerInstance == null) return;
 
         int playerId = GetNextFreePlayerId();
         if (playerId < 0)
@@ -51,7 +51,7 @@ public class GameManager : MonoBehaviour
             player.SetShoppingList(shoppingList);
         }
 
-        var stats = _uiMainInstance.AddPlayer(player);
+        var stats = _uiManagerInstance.AddPlayer(player);
         if (stats != null)
             stats.SetPlayerName($"Player {playerId + 1}");
     }
@@ -68,23 +68,23 @@ public class GameManager : MonoBehaviour
 
         _usedPlayerIds[player.PlayerId] = false;
 
-        if (_uiMainInstance != null)
-            _uiMainInstance.RemovePlayer(player);
+        if (_uiManagerInstance != null)
+            _uiManagerInstance.RemovePlayer(player);
     }
 
-    private void EnsureUIMainExists()
+    private void EnsureUIManagerExists()
     {
-        if (_uiMainInstance != null) return;
+        if (_uiManagerInstance != null) return;
 
-        if (uiMainPrefab == null)
+        if (uiManagerPrefab == null)
         {
-            Debug.LogWarning("GameManager: UI_Main prefab not set.");
+            Debug.LogWarning("GameManager: UI_Manager prefab not set.");
             return;
         }
 
-        _uiMainInstance = FindObjectOfType<UI_Main>();
-        if (_uiMainInstance == null)
-            _uiMainInstance = Instantiate(uiMainPrefab);
+        _uiManagerInstance = FindObjectOfType<UI_Manager>();
+        if (_uiManagerInstance == null)
+            _uiManagerInstance = Instantiate(uiManagerPrefab);
     }
 
     private int GetNextFreePlayerId()
@@ -98,7 +98,7 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Returns the runtime UI_Main instance (after Start has run), or null.
+    /// Returns the runtime UI_Manager instance (after Start has run), or null.
     /// </summary>
-    public UI_Main UIMain => _uiMainInstance;
+    public UI_Manager UIManager => _uiManagerInstance;
 }

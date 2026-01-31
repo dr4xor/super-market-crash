@@ -15,7 +15,7 @@ public class Cart : MonoBehaviour
     [SerializeField] private float forceDashing = 2f;
     [SerializeField] private float forceFactorBrakeDashing = 2f;
     [SerializeField] private float maxSpeedDashing = 2f;
-    
+
     /*
     [Header("Movement")]
     [SerializeField] private float _maxSpeed = 6f;
@@ -29,6 +29,7 @@ public class Cart : MonoBehaviour
     [SerializeField] private float _rotationFollowSpeed = 5f;
     */
 
+
     private Vector3 _moveInput;
     private Rigidbody _rigidbody;
     private float _curYRotation;
@@ -36,8 +37,8 @@ public class Cart : MonoBehaviour
     private float _dashS = 0f;
     private bool _isDashing = false;
 
-    private CartItemsContainer _cartItemsContainer;
-    public CartItemsContainer CartItemsContainer => _cartItemsContainer;
+    private CartShaker _cartShaker;
+    public CartShaker CartShaker => _cartShaker;
     private PlayerAnimationController _playerAnimationController;
     public PlayerAnimationController PlayerAnimationController => _playerAnimationController;
 
@@ -45,8 +46,10 @@ public class Cart : MonoBehaviour
     private void Start()
     {
         _rigidbody = GetComponent<Rigidbody>();
+        _rigidbody.centerOfMass = Vector3.zero;
+        _rigidbody.inertiaTensorRotation = Quaternion.identity;
 
-        _cartItemsContainer = GetComponentInChildren<CartItemsContainer>();
+        _cartShaker = GetComponentInChildren<CartShaker>();
 
         // Recommended for drift: low drag so our code controls the feel
         //if (_rigidbody.linearDamping < 0.5f)
@@ -57,28 +60,29 @@ public class Cart : MonoBehaviour
 
     private void FixedUpdate()
     {
-         float dashFactor = handleDash();
-        
-         Vector3 desiredVelocity = _moveInput * Mathf.Lerp(maxSpeed, maxSpeedDashing, dashFactor);
+        float dashFactor = handleDash();
 
-         Vector3 forceDelta = desiredVelocity - _rigidbody.linearVelocity;
+        Vector3 desiredVelocity = _moveInput * Mathf.Lerp(maxSpeed, maxSpeedDashing, dashFactor);
 
-         float angleBetweenDeltaAndVelocity = Vector3.Angle(forceDelta, _rigidbody.linearVelocity);
+        Vector3 forceDelta = desiredVelocity - _rigidbody.linearVelocity;
 
-         float usedForceFactor = Mathf.Lerp(forceFactor, forceDashing, dashFactor);
+        float angleBetweenDeltaAndVelocity = Vector3.Angle(forceDelta, _rigidbody.linearVelocity);
 
-         if (angleBetweenDeltaAndVelocity > 90f)
-         {
+        float usedForceFactor = Mathf.Lerp(forceFactor, forceDashing, dashFactor);
+
+        if (angleBetweenDeltaAndVelocity > 90f)
+        {
             usedForceFactor = Mathf.Lerp(forceFactorBrake, forceFactorBrakeDashing, dashFactor);
-         }
+        }
 
-         // Add force to push the rigidboody towards the desired velocity
-         _rigidbody.AddForce(forceDelta * usedForceFactor);
+        // Add force to push the rigidboody towards the desired velocity
+        _rigidbody.AddForce(forceDelta * usedForceFactor);
 
 
         //_rigidbody.AddForce(_moveInput * forceFactor);
 
-// Limit the velocity to the max speed
+        // Limit the velocity to the max speed
+
         Vector3 currentVelocity = _rigidbody.linearVelocity;
         float currentSpeed = currentVelocity.magnitude;
         if (currentSpeed > maxSpeed)
@@ -112,7 +116,8 @@ public class Cart : MonoBehaviour
 
         _dashS += Time.fixedDeltaTime / dashTime;
         float dashCurveValue = dashMoveCurve.Evaluate(_dashS);
-        
+
+
         return dashCurveValue;
     }
 
@@ -126,54 +131,55 @@ public class Cart : MonoBehaviour
         _isDashing = true;
         _dashS = 0f;
     }
-/*
-    private void performDriftMovement()
-    {
-        // Map stick input to world XZ (Y = up). Magnitude = how much throttle.
-        Vector3 inputWorld = new Vector3(_moveInput.x, 0f, _moveInput.y);
-        float inputMagnitude = inputWorld.magnitude;
-        if (inputMagnitude > 1f)
-            inputMagnitude = 1f;
-
-        Vector3 desiredDirection = inputMagnitude > 0.01f ? inputWorld.normalized : Vector3.zero;
-        float desiredSpeed = inputMagnitude * _maxSpeed;
-        Vector3 desiredVelocity = desiredDirection * desiredSpeed;
-
-        Vector3 currentVelocity = _rigidbody.linearVelocity;
-        currentVelocity.y = 0f; // keep vertical velocity (gravity/jumps) untouched
-
-        // Accelerate magnitude: reach target speed over time
-        float currentSpeed = currentVelocity.magnitude;
-        float newSpeed = Mathf.MoveTowards(currentSpeed, desiredSpeed, _acceleration * Time.fixedDeltaTime);
-
-        // Turn toward desired direction with lag (this creates the drift)
-        Vector3 newDirection;
-        if (newSpeed < 0.01f || desiredSpeed < 0.01f)
+    /*
+        private void performDriftMovement()
         {
-            newDirection = desiredDirection.sqrMagnitude > 0.01f ? desiredDirection : (currentSpeed > 0.01f ? currentVelocity.normalized : desiredDirection);
-        }
-        else if (currentSpeed < 0.01f)
-        {
-            newDirection = desiredDirection; // from standstill, go straight toward input
-        }
-        else
-        {
-            Vector3 currentDirection = currentVelocity.normalized;
-            newDirection = Vector3.Slerp(currentDirection, desiredDirection, _turnResponsiveness * Time.fixedDeltaTime).normalized;
-        }
+            // Map stick input to world XZ (Y = up). Magnitude = how much throttle.
+            Vector3 inputWorld = new Vector3(_moveInput.x, 0f, _moveInput.y);
+            float inputMagnitude = inputWorld.magnitude;
+            if (inputMagnitude > 1f)
+                inputMagnitude = 1f;
 
-        Vector3 newVelocity = newDirection * newSpeed;
-        newVelocity.y = _rigidbody.linearVelocity.y;
-        _rigidbody.linearVelocity = newVelocity;
+            Vector3 desiredDirection = inputMagnitude > 0.01f ? inputWorld.normalized : Vector3.zero;
+            float desiredSpeed = inputMagnitude * _maxSpeed;
+            Vector3 desiredVelocity = desiredDirection * desiredSpeed;
 
-        // Optional: rotate cart to face movement for extra juice
-        if (_rotationFollowSpeed > 0f && newVelocity.sqrMagnitude > 0.01f)
-        {
-            Vector3 flatVel = newVelocity;
-            flatVel.y = 0f;
-            Quaternion targetRotation = Quaternion.LookRotation(flatVel, Vector3.up);
-            _rigidbody.rotation = Quaternion.Slerp(_rigidbody.rotation, targetRotation, _rotationFollowSpeed * Time.fixedDeltaTime);
+            Vector3 currentVelocity = _rigidbody.linearVelocity;
+            currentVelocity.y = 0f; // keep vertical velocity (gravity/jumps) untouched
+
+            // Accelerate magnitude: reach target speed over time
+            float currentSpeed = currentVelocity.magnitude;
+            float newSpeed = Mathf.MoveTowards(currentSpeed, desiredSpeed, _acceleration * Time.fixedDeltaTime);
+
+            // Turn toward desired direction with lag (this creates the drift)
+            Vector3 newDirection;
+            if (newSpeed < 0.01f || desiredSpeed < 0.01f)
+            {
+                newDirection = desiredDirection.sqrMagnitude > 0.01f ? desiredDirection : (currentSpeed > 0.01f ? currentVelocity.normalized : desiredDirection);
+            }
+            else if (currentSpeed < 0.01f)
+            {
+                newDirection = desiredDirection; // from standstill, go straight toward input
+            }
+            else
+            {
+                Vector3 currentDirection = currentVelocity.normalized;
+                newDirection = Vector3.Slerp(currentDirection, desiredDirection, _turnResponsiveness * Time.fixedDeltaTime).normalized;
+            }
+
+            Vector3 newVelocity = newDirection * newSpeed;
+            newVelocity.y = _rigidbody.linearVelocity.y;
+            _rigidbody.linearVelocity = newVelocity;
+
+            // Optional: rotate cart to face movement for extra juice
+            if (_rotationFollowSpeed > 0f && newVelocity.sqrMagnitude > 0.01f)
+            {
+                Vector3 flatVel = newVelocity;
+                flatVel.y = 0f;
+                Quaternion targetRotation = Quaternion.LookRotation(flatVel, Vector3.up);
+                _rigidbody.rotation = Quaternion.Slerp(_rigidbody.rotation, targetRotation, _rotationFollowSpeed * Time.fixedDeltaTime);
+            }
         }
-    }
-*/
+    */
+
 }

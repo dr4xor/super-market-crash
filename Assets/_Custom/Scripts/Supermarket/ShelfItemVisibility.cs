@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using ScriptableObjects;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,7 +14,7 @@ namespace Scripts.Supermarket
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.TryGetComponent<PlayerInputReceiver>(out var playerInputReceiver))
+            if (other.TryGetComponent<Player>(out _))
             {
                 image.gameObject.SetActive(true);
             }
@@ -26,7 +22,7 @@ namespace Scripts.Supermarket
         
         private void OnTriggerExit(Collider other)
         {
-            if (other.TryGetComponent<PlayerInputReceiver>(out var playerInputReceiver))
+            if (other.TryGetComponent<Player>(out _))
             {
                 image.gameObject.SetActive(false);
             }

@@ -27,7 +27,7 @@ public class CartCollisionHandler : MonoBehaviour
             return;
         }
         
-        _cart.CartItemsContainer.ShakeDueToCrash();
+        _cart.CartShaker.ShakeDueToCrash();
 
         Debug.Log("Collision with other cart");
     }
