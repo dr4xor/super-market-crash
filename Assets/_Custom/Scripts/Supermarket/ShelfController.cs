@@ -10,28 +10,36 @@ namespace Scripts.Supermarket
     {
         [SerializeField] private Image image;
         [SerializeField] private List<Transform> shelfItemPositions;
+        [SerializeField] private  ItemFacade itemPrefab;
         
         public ItemTemplate itemTemplate;
         public int shelfItemCount;
         
-        private List<GameObject> _shelfItems = new();
+        private readonly List<ItemFacade> _shelfItems = new();
         
         private void Start()
         {
             image.sprite = itemTemplate.sprite;
             for (var i = 0; i < shelfItemCount; i++)
             {
-                var itemVisual = Instantiate(itemTemplate.itemPrefab, shelfItemPositions[i].position, Quaternion.identity);
-                _shelfItems.Add(itemVisual);  
+                var item = Instantiate(itemPrefab, shelfItemPositions[i].position, Quaternion.identity);
+                item.Init(itemTemplate);
+                _shelfItems.Add(item);  
             }
         }
         
         public int RemainingItems => _shelfItems.Count;
 
-        public bool TryTakeItem(out ItemTemplate item)
+        public bool TryTakeItem(out ItemFacade item)
         {
-            item = itemTemplate;
-            return _shelfItems.Any();
+            item = null;
+            if (!_shelfItems.Any())
+            {
+                return false;
+            }
+
+            item = _shelfItems.First();
+            return true;
         }
     }
 }
