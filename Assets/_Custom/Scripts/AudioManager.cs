@@ -134,6 +134,7 @@ public class AudioManager : MonoBehaviour
         {
             AudioSource src = _usingSourceA ? _musicSourceA : _musicSourceB;
             src.clip = clip;
+            src.loop = true;
             src.volume = audioMixer != null ? 1f : musicVolume;
             src.Play();
             return;
@@ -196,6 +197,10 @@ public class AudioManager : MonoBehaviour
 
         activeSource.Stop();
         activeSource.volume = audioMixer != null ? 1f : musicVolume;
+
+        // Update _usingSourceA to point to the source we just stopped, so the next PlayMusic uses it
+        _usingSourceA = (activeSource == _musicSourceA);
+
         _currentMusicType = null;
         _crossfadeRoutine = null;
     }
@@ -274,6 +279,7 @@ public class AudioManager : MonoBehaviour
 
         fadeIn.volume = 0f;
         fadeIn.clip = nextClip;
+        fadeIn.loop = true;
         fadeIn.Play();
 
         float elapsed = 0f;
