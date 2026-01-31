@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using ScriptableObjects;
 using Scripts.Supermarket;
 using UnityEngine;
 
@@ -29,5 +30,17 @@ public class ShelfsManager : MonoBehaviour
     public void AddShelf(ShelfFacade shelf)
     {
         _shelves.Add(shelf);
+    }
+
+    public List<ItemTemplate> GetAllItemTemplates()
+    {
+        List<ItemTemplate> itemTemplates = new();
+        for (int i = 0; i < _shelves.Count; i++)
+        {
+            if (itemTemplates.Contains(_shelves[i].itemTemplate))
+                continue;
+            itemTemplates.Add(_shelves[i].itemTemplate);
+        }
+        return itemTemplates;
     }
 }
