@@ -5,12 +5,19 @@ using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviour
 {
-    public enum GameState { MainMenu, InGame }
 
     public static GameManager Instance { get; private set; }
 
-    [Header("State")]
-    [SerializeField] private GameState currentState = GameState.MainMenu;
+
+    [Header("Scene References")]
+    [SerializeField] private Transform[] _playerSpawnPointsMainMenu;
+    [SerializeField] private Transform[] _playerSpawnPointsInGame;
+    [SerializeField] private Transform _mainMenuCameraAnchor;
+    [SerializeField] private Transform _inGameCameraAnchor;
+
+    [Header("Debug")]
+    [SerializeField] private bool startInPlayMode = false;
+    [SerializeField] private GameState currentState = new MainMenu();
 
     [Header("References")]
     [SerializeField] private ItemDatabase itemDatabase;
@@ -28,14 +35,31 @@ public class GameManager : MonoBehaviour
     public GameState CurrentState
     {
         get => currentState;
-        set => currentState = value;
+        set
+        {
+            if (currentState == value)
+                return;
+
+            currentState?.Exit();
+            currentState = value;
+            currentState?.Enter();
+        }
     }
 
-    public bool IsInMainMenu => currentState == GameState.MainMenu;
-    public bool IsInGame => currentState == GameState.InGame;
+    public bool IsInMainMenu => currentState is MainMenu;
+    public bool IsInGame => currentState is InGame;
 
+
+    public Transform[] PlayerSpawnPointsMainMenu => _playerSpawnPointsMainMenu;
+    public Transform[] PlayerSpawnPointsInGame => _playerSpawnPointsInGame;
+    public Transform MainMenuCameraAnchor => _mainMenuCameraAnchor;
+    public Transform InGameCameraAnchor => _inGameCameraAnchor;
+    
     private void Awake()
     {
+        if (startInPlayMode)
+            CurrentState = new InGame();
+
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -47,6 +71,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         EnsureUIManagerExists();
+        currentState?.Enter();
     }
 
     /// <summary>
@@ -78,6 +103,11 @@ public class GameManager : MonoBehaviour
         
         // Add to active players list
         _activePlayers.Add(player);
+
+        // Move the player to the appropriate spawn point
+        Transform spawnPoint = IsInMainMenu ? _playerSpawnPointsMainMenu[playerId] : _playerSpawnPointsInGame[playerId];
+        player.transform.position = spawnPoint.position;
+        player.transform.rotation = spawnPoint.rotation;
 
         if (itemDatabase != null)
         {
@@ -204,4 +234,5 @@ public class GameManager : MonoBehaviour
         }
         return false;
     }
+
 }
