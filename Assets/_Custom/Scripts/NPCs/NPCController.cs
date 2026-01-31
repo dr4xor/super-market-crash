@@ -127,6 +127,8 @@ public class NPCController : MonoBehaviour
 
     public void GoToTarget(Transform target, float timeToSpendAtTarget, string animParamAtTarget = "", bool isParamTrigger = false)
     {
+        var sfx = notAmusedSfxList[Random.Range(0, notAmusedSfxList.Count)];
+        _sfxSource.PlayOneShot(sfx);
         _curTarget = target;
         CurrentState = NPCState.GOING_TO_TARGET;
         _navMeshAgent.SetDestination(target.position);

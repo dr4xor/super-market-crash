@@ -150,7 +150,11 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   rotationSpeed: 8
-  notAmusedSfxList: []
+  notAmusedSfxList:
+  - {fileID: 8300000, guid: bc853d944c3319942bd38085983ad7da, type: 3}
+  - {fileID: 8300000, guid: 5460b7ae01a542242b1c5bd0f51a5e66, type: 3}
+  - {fileID: 8300000, guid: 23b3525dfaf84884099f3017e53a1f47, type: 3}
+  - {fileID: 8300000, guid: bbaf3953ff6ccb74284f672bb4f76da1, type: 3}
 --- !u!136 &1441464437182136957
 CapsuleCollider:
   m_ObjectHideFlags: 0
