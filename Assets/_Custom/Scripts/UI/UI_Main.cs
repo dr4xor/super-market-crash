@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class UI_Main : MonoBehaviour
 {
+    public static UI_Main Instance { get; private set; }
+
     [Header("References")]
     [SerializeField] private Transform playerStatsContainer;
     [SerializeField] private UI_PlayerStats playerStatsPrefab;
@@ -10,6 +12,22 @@ public class UI_Main : MonoBehaviour
     [SerializeField] private Transform pickupHudContainer;
 
     private readonly Dictionary<Player, UI_PlayerStats> _playerStatsByPlayer = new();
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+    }
+
+    private void OnDestroy()
+    {
+        if (Instance == this)
+            Instance = null;
+    }
 
     /// <summary>
     /// Spawns a UI_PlayerStats for the given player and binds it. Call when a player connects.
