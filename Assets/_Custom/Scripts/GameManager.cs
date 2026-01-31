@@ -49,7 +49,7 @@ public class GameManager : MonoBehaviour
     public bool IsInMainMenu => currentState is MainMenu;
     public bool IsInGame => currentState is InGame;
 
-
+    public ItemDatabase ItemDatabase => itemDatabase;
     public Transform[] PlayerSpawnPointsMainMenu => _playerSpawnPointsMainMenu;
     public Transform[] PlayerSpawnPointsInGame => _playerSpawnPointsInGame;
     public Transform MainMenuCameraAnchor => _mainMenuCameraAnchor;
@@ -109,15 +109,16 @@ public class GameManager : MonoBehaviour
         player.transform.position = spawnPoint.position;
         player.transform.rotation = spawnPoint.rotation;
 
-        if (itemDatabase != null)
-        {
-            var shoppingList = ShoppingListGenerator.Generate(itemDatabase);
-            player.SetShoppingList(shoppingList);
-        }
-
+        
         // Set the default character selection for the player
         player.SelectedCharacter = characterDatabase.GetCharacter(0);
         player.SelectedSkinIndex = 0;
+
+        if(IsInGame)
+        {
+            var shoppingList = ShoppingListGenerator.Generate(ShelfsManager.Instance.GetAllItemTemplates());
+            player.SetShoppingList(shoppingList);
+        }
 
         var stats = _uiManagerInstance.AddPlayer(player);
         if (stats != null)

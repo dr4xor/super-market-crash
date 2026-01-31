@@ -4,46 +4,54 @@ using UnityEngine;
 
 public static class ShoppingListGenerator
 {
-    private const int TargetValue = 20;
-    private const int MinValue = 16;
-    private const int MaxValue = 24;
+    private const int ItemTypeCount = 6;
+    private const int TotalItemCount = 20;
 
     /// <summary>
-    /// Generates a random shopping list from the database with a total value of approximately 20 money.
+    /// Generates a random shopping list.
     /// </summary>
-    public static Dictionary<ItemTemplate, int> Generate(ItemDatabase database)
+    public static Dictionary<ItemTemplate, int> Generate(List<ItemTemplate> availableItems)
     {
         var result = new Dictionary<ItemTemplate, int>();
-        if (database == null || database.items == null || database.items.Length == 0)
+
+        if (availableItems == null || availableItems.Count == 0)
             return result;
 
-        var affordableItems = new List<ItemTemplate>();
-        foreach (var item in database.items)
+        // Filter valid items
+        var validItems = new List<ItemTemplate>();
+        foreach (var item in availableItems)
         {
-            if (item != null && item.price > 0 && item.price <= MaxValue)
-                affordableItems.Add(item);
+            if (item != null)
+                validItems.Add(item);
         }
 
-        if (affordableItems.Count == 0)
+        if (validItems.Count == 0)
             return result;
 
-        int totalValue = 0;
-        int attempts = 0;
-        const int maxAttempts = 100;
+        // Pick 6 random unique item types (or less if not enough available)
+        int typesToPick = Mathf.Min(ItemTypeCount, validItems.Count);
+        var selectedItems = new List<ItemTemplate>();
 
-        while (totalValue < MinValue && attempts < maxAttempts)
+        var shuffled = new List<ItemTemplate>(validItems);
+        for (int i = 0; i < typesToPick; i++)
         {
-            var item = affordableItems[Random.Range(0, affordableItems.Count)];
-            int potentialCost = item.price;
-            if (totalValue + potentialCost <= MaxValue)
-            {
-                if (result.TryGetValue(item, out var qty))
-                    result[item] = qty + 1;
-                else
-                    result[item] = 1;
-                totalValue += potentialCost;
-            }
-            attempts++;
+            int randomIndex = Random.Range(i, shuffled.Count);
+            (shuffled[i], shuffled[randomIndex]) = (shuffled[randomIndex], shuffled[i]);
+            selectedItems.Add(shuffled[i]);
+        }
+
+        // Start each item type with 1 item
+        foreach (var item in selectedItems)
+        {
+            result[item] = 1;
+        }
+
+        // Distribute remaining items randomly
+        int remaining = TotalItemCount - typesToPick;
+        for (int i = 0; i < remaining; i++)
+        {
+            var randomItem = selectedItems[Random.Range(0, selectedItems.Count)];
+            result[randomItem]++;
         }
 
         return result;

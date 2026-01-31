@@ -21,10 +21,34 @@ public class InGame : GameState
             player.transform.DOMove(spawnPoint.position, TransitionDuration).SetEase(Ease.InOutQuad);
             player.transform.DORotateQuaternion(spawnPoint.rotation, TransitionDuration).SetEase(Ease.InOutQuad);
         }
+        
+        
+        var shelfManager = ShelfsManager.Instance;
+        if (shelfManager == null)
+        {
+            Debug.LogError("InGame: ShelfsManager not found");
+            return;
+        }
+
+        var availableItems = shelfManager.GetAllItemTemplates();
+
+        // Generate Shopping List for each player
+        foreach (var player in GameManager.Instance.ActivePlayers)
+        {
+            var shoppingList = ShoppingListGenerator.Generate(availableItems);
+            player.SetShoppingList(shoppingList);
+        }
+        
     }
 
     public override void Exit()
     {
+        foreach (var player in GameManager.Instance.ActivePlayers)
+        {
+            player.SetShoppingList(null);
+            player.ItemsInCart.Clear();
+            player.BoughtItems.Clear();
+        }
         Debug.Log("InGame: Exit");
     }
 }
