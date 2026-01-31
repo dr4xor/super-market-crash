@@ -165,9 +165,12 @@ MonoBehaviour:
   - {fileID: 3134169735792979455}
   itemPrefab: {fileID: 7268993668902015563, guid: a0d4fd40ff4e7954c850a8739a00b82a, type: 3}
   restockingPosition: {fileID: 6316458175577366192}
+  itemDatabase: {fileID: 11400000, guid: 9702cb474f8344a259ffe409372c0821, type: 2}
   hudPosition: {fileID: 2696969381069082673}
   itemTemplate: {fileID: 11400000, guid: 4b8589cccfc6cbf4ca49816aa5edb962, type: 2}
   shelfItemCount: 8
+  shelfType: 0
+  shouldSpawnRandomItem: 1
 --- !u!65 &6701322961822548574
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -17,3 +17,4 @@ MonoBehaviour:
   sprite: {fileID: 21300000, guid: c2b4b2380f064e04e967f9cecea03cb6, type: 3}
   price: 8
   weight: 15
+  shelfTypes: 01000000

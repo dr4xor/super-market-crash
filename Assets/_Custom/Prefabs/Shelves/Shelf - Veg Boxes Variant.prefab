@@ -45,9 +45,17 @@ PrefabInstance:
       value: 1.45
       objectReference: {fileID: 0}
     - target: {fileID: 5817870046046959890, guid: 6313f8d67f9ada7468dced7e950d39f0, type: 3}
+      propertyPath: shelfType
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5817870046046959890, guid: 6313f8d67f9ada7468dced7e950d39f0, type: 3}
       propertyPath: itemTemplate
       value: 
       objectReference: {fileID: 11400000, guid: 639ee11f79954ba4b9857d3a39841825, type: 2}
+    - target: {fileID: 5817870046046959890, guid: 6313f8d67f9ada7468dced7e950d39f0, type: 3}
+      propertyPath: shouldSpawnRandomItem
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5888794134410142567, guid: 6313f8d67f9ada7468dced7e950d39f0, type: 3}
       propertyPath: m_LocalPosition.x
       value: 2.53

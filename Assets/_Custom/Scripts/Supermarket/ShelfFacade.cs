@@ -12,10 +12,13 @@ namespace Scripts.Supermarket
         [SerializeField] private List<Transform> shelfItemPositions;
         [SerializeField] private ItemFacade itemPrefab;
         [SerializeField] private Transform restockingPosition;
+        [SerializeField] private ItemDatabase itemDatabase;
 
         public Transform hudPosition;
         public ItemTemplate itemTemplate;
         public int shelfItemCount;
+        public ShelfType shelfType;
+        public bool shouldSpawnRandomItem;
 
 
         private readonly List<ItemFacade> _shelfItems = new();
@@ -32,6 +35,11 @@ namespace Scripts.Supermarket
 
         private void Start()
         {
+            if (shouldSpawnRandomItem)
+            {
+                itemTemplate = getRandomItemTemplate();
+            }
+
             image.sprite = itemTemplate.sprite;
             Restock();
         }
@@ -83,6 +91,12 @@ namespace Scripts.Supermarket
             }
             _shelfItems.Clear();
             Restock();
+        }
+
+        private ItemTemplate getRandomItemTemplate()
+        {
+            ItemTemplate[] itemTemplates = itemDatabase.items.Where(item => item.CanFitInShelf(shelfType)).ToArray();
+            return itemTemplates[Random.Range(0, itemTemplates.Length)];
         }
     }
 }

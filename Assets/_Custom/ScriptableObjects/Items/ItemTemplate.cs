@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 
 namespace ScriptableObjects
@@ -10,5 +11,25 @@ namespace ScriptableObjects
         public Sprite sprite;
         public int price;
         public int weight;
+        public ShelfType[] shelfTypes;
+
+        public bool CanFitInShelf(ShelfType shelfType)
+        {
+            if (shelfTypes == null
+                || shelfTypes.Length == 0)
+            {
+                return shelfType == ShelfType.Shelf;
+            }
+
+            return shelfTypes.Contains(shelfType);
+        }
+    }
+
+    public enum ShelfType
+    {
+        Shelf,
+        Freezer,
+        Board,
+        VegetableBoxes,
     }
 }
