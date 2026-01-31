@@ -27,16 +27,16 @@ public class UI_PickupHUD : MonoBehaviour
     /// </summary>
     /// <param name="worldTransform">The transform in world space to follow (e.g. item or interaction point).</param>
     /// <param name="player">Optional. If set, applies the player's color to the background image.</param>
-    /// <param name="item">Optional. If set, applies the item's sprite to the item image.</param>
-    public void Initialize(Transform worldTransform, ItemTemplate item = null, Player player = null)
+    /// <param name="sprite">Optional. If set, applies the sprite to the item image.</param>
+    public void Initialize(Transform worldTransform, Sprite sprite = null, Player player = null)
     {
         _worldFollowTarget = worldTransform;
 
         if (backgroundImage != null && player != null)
             backgroundImage.color = player.Color;
 
-        if (itemSprite != null && item != null)
-            itemSprite.sprite = item.sprite;
+        if (itemSprite != null && sprite != null)
+            itemSprite.sprite = sprite;
 
         SetProgress(0f);
     }

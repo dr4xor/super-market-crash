@@ -26,7 +26,7 @@ public class PlayerShelfInteractor : MonoBehaviour
             if (!_pickupHud && _shelfInRange.HasItems)
             {
                 print(DateTime.Now.ToLongTimeString() + " Enter shelf");
-                _pickupHud = UI_Manager.Instance.SpawnPickupHUD(_shelfInRange.transform, _shelfInRange.itemTemplate, _player);
+                _pickupHud = UI_Manager.Instance.SpawnPickupHUD(_shelfInRange.transform, _shelfInRange.itemTemplate.sprite, _player);
             }
         }
     }
