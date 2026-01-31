@@ -85,6 +85,7 @@ GameObject:
   - component: {fileID: 9057464639772078941}
   - component: {fileID: 8100277933657797801}
   - component: {fileID: -2250659560049463426}
+  - component: {fileID: 5750518439171047091}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -319,6 +320,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Player
   playerId: 0
   money: 100
+--- !u!135 &5750518439171047091
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6224988939651710230}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6512023204539800105
 GameObject:
   m_ObjectHideFlags: 0
