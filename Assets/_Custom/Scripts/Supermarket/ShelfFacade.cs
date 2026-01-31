@@ -39,6 +39,7 @@ namespace Scripts.Supermarket
             }
 
             item = _shelfItems.First();
+            _shelfItems.Remove(item);
             return true;
         }
     }
