@@ -60,12 +60,15 @@ public class PlayerInputReceiver : MonoBehaviour
 
     private void OnEastUp(InputAction.CallbackContext context)
     {
+Debug.Log("OnEastUp");
+
         _playerShelfInteractor.OnInteractCancel();
     }
 
 
     private void OnEastDown(InputAction.CallbackContext context)
     {
+        Debug.Log("OnEastDown");
         _playerShelfInteractor.OnInteract();
     }
 }

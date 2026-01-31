@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class ItemFacade : MonoBehaviour
 {
-
     public ItemTemplate ItemTemplate { get; private set; }
     public void Init(ItemTemplate template)
     {

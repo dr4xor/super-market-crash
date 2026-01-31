@@ -1,4 +1,5 @@
 using System;
+using SappUnityUtils.Numbers;
 using UnityEngine;
 
 public class Cart : MonoBehaviour
@@ -42,6 +43,11 @@ public class Cart : MonoBehaviour
     private PlayerAnimationController _playerAnimationController;
     public PlayerAnimationController PlayerAnimationController => _playerAnimationController;
 
+    private CartItemsContainer _cartItemsContainer;
+    public CartItemsContainer CartItemsContainer => _cartItemsContainer;
+
+    private MovingAverage<float> _movingAverageVelocity = new MovingAverage<float>(64);
+    public MovingAverage<float> MovingAverageVelocity => _movingAverageVelocity;
 
     private void Start()
     {
@@ -56,6 +62,7 @@ public class Cart : MonoBehaviour
         //    _rigidbody.linearDamping = 0.5f;
 
         _playerAnimationController = GetComponent<PlayerAnimationController>();
+        _cartItemsContainer = GetComponentInChildren<CartItemsContainer>();
     }
 
     private void FixedUpdate()
@@ -99,6 +106,7 @@ public class Cart : MonoBehaviour
             toRotate.rotation = Quaternion.RotateTowards(toRotate.rotation, targetRotation, rotationSpeed * Time.fixedDeltaTime);
         }
 
+        _movingAverageVelocity.AddValue(_rigidbody.linearVelocity.magnitude);
 
         // Force clamp the rotation of the rigidbody to be flat
         //_rigidbody.rotation = Quaternion.Euler(0f, _rigidbody.rotation.eulerAngles.y, 0f);

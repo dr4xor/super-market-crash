@@ -1,8 +1,11 @@
+using ScriptableObjects;
+using Scripts.Supermarket;
 using UnityEngine;
 
 public class CartCollisionHandler : MonoBehaviour
 {
     [SerializeField] private float minVelocityForHit = 8f;
+    [SerializeField] private CartCrashConfig cartCrashConfig;
 
     private Cart _cart;
     private Rigidbody _rigidbody;
@@ -15,14 +18,17 @@ public class CartCollisionHandler : MonoBehaviour
 
     public void CollisionWithOtherCart(CartCollisionHandler otherCartCollisionHandler)
     {
-        if (otherCartCollisionHandler._rigidbody.linearVelocity.magnitude > _rigidbody.linearVelocity.magnitude)
+        float selfVelocity = _cart.MovingAverageVelocity.GetValueInPast(0.2f);
+        float otherVelocity = otherCartCollisionHandler._cart.MovingAverageVelocity.GetValueInPast(0.2f);
+
+        if (otherVelocity > selfVelocity)
         {
             return;
         }
 
-        Debug.Log("Cur self velocity: " + _rigidbody.linearVelocity.magnitude);
+        Debug.Log("Cur self velocity: " + selfVelocity);
 
-        if (_rigidbody.linearVelocity.magnitude < minVelocityForHit)
+        if (selfVelocity < minVelocityForHit)
         {
             return;
         }
@@ -30,5 +36,17 @@ public class CartCollisionHandler : MonoBehaviour
         _cart.CartShaker.ShakeDueToCrash();
 
         Debug.Log("Collision with other cart");
+    }
+
+    public void CollisionWithSomething()
+    {
+        float selfVelocity = _cart.MovingAverageVelocity.GetValueInPast(0.2f);
+
+        int amountOfItemsToLose = cartCrashConfig.ComputeAmountOfItemstoLose(
+            _cart.CartItemsContainer.ItemsInCart.Count,
+            selfVelocity,
+            false);
+
+        _cart.CartItemsContainer.LoseItems(amountOfItemsToLose);
     }
 }

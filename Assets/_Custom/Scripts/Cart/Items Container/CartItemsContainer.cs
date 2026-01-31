@@ -15,9 +15,16 @@ public class CartItemsContainer : MonoBehaviour
     [SerializeField] private ItemTemplate[] itemTemplates;
     [SerializeField] private float dragWhenInCart;
     [SerializeField] private float angDragWhenInCart;
+    [SerializeField] private Transform areaItemLose;
+    [SerializeField] private float flyAwaySpeed;
+    [SerializeField] private float flyAwayAngularSpeed;
+    [SerializeField] private float freezeVelocityThreshold = 0.5f;
+    [SerializeField] private float timeForVelocityUnderThreshold = 0.5f;
 
     private List<ItemFacade> _itemsInCart = new List<ItemFacade>();
     private List<float> _freezeItemsIn = new List<float>();
+
+    public List<ItemFacade> ItemsInCart => _itemsInCart;
 
     private Player _player;
 
@@ -33,6 +40,31 @@ public class CartItemsContainer : MonoBehaviour
         goItem.Init(itemTemplates[Random.Range(0, itemTemplates.Length)]);
         goItem.transform.position = spawnOfExampleItem.position;
         AddItemToCart(goItem);
+    }
+
+    public void LoseItems(int amountOfItemsToLose)
+    {
+        for (int i = 0; i < amountOfItemsToLose; i++)
+        {
+            int randomIndex = Random.Range(0, _itemsInCart.Count);
+            ItemFacade itemToLose = _itemsInCart[randomIndex];
+            _itemsInCart.RemoveAt(randomIndex);
+            _freezeItemsIn.RemoveAt(randomIndex);
+
+            itemToLose.gameObject.AddComponent<Rigidbody>();
+            
+            itemToLose.transform.position = getRandomPositionInArea();
+            itemToLose.transform.parent = null;
+            itemToLose.GetComponent<Rigidbody>().isKinematic = false;
+            itemToLose.GetComponent<Rigidbody>().linearVelocity = getRandomUpVector() * flyAwaySpeed;
+            itemToLose.GetComponent<Rigidbody>().angularVelocity = getRandomAngularVelocity() * flyAwayAngularSpeed
+                * UnityEngine.Random.Range(0.5f, 1f);
+            itemToLose.GetComponent<Rigidbody>().mass = 0.01f;
+            itemToLose.GetComponent<Rigidbody>().linearDamping = dragWhenInCart;
+            itemToLose.GetComponent<Rigidbody>().angularDamping = angDragWhenInCart;
+
+            setLayerRecursively(itemToLose.gameObject, LayerMask.NameToLayer("Default"));
+        }
     }
 
 
@@ -75,16 +107,25 @@ public class CartItemsContainer : MonoBehaviour
     {
         for (int i = 0; i < _freezeItemsIn.Count; i++)
         {
-            if (_freezeItemsIn[i] > 0)
+            /// Is already freezed
+            if (_freezeItemsIn[i] <= 0f)
+            {
+                continue;
+            }
+
+            if (_itemsInCart[i].GetComponent<Rigidbody>().linearVelocity.magnitude < freezeVelocityThreshold)
             {
                 _freezeItemsIn[i] -= Time.deltaTime;
-
                 if (_freezeItemsIn[i] <= 0)
                 {
                     _itemsInCart[i].transform.parent = transform;
                     _itemsInCart[i].GetComponent<Rigidbody>().isKinematic = true;
                     Destroy(_itemsInCart[i].GetComponent<Rigidbody>());
                 }
+            }
+            else
+            {
+                _freezeItemsIn[i] = timeForVelocityUnderThreshold;
             }
         }
     }
@@ -112,5 +153,28 @@ public class CartItemsContainer : MonoBehaviour
         {
             setLayerRecursively(child.gameObject, layer);
         }
+    }
+
+    private Vector3 getRandomPositionInArea()
+    {
+        return new Vector3(Random.Range(areaItemLose.position.x - areaItemLose.localScale.x / 2, areaItemLose.position.x + areaItemLose.localScale.x / 2),
+            Random.Range(areaItemLose.position.y - areaItemLose.localScale.y / 2, areaItemLose.position.y + areaItemLose.localScale.y / 2),
+            Random.Range(areaItemLose.position.z - areaItemLose.localScale.z / 2, areaItemLose.position.z + areaItemLose.localScale.z / 2));
+    }
+
+    private Vector3 getRandomUpVector()
+    {
+        return new Vector3(Random.Range(-1f, 1f), 1.5f, Random.Range(-1f, 1f)).normalized;
+    }
+
+    private Vector3 getRandomAngularVelocity()
+    {
+        return new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized;
+    }
+    
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireCube(areaItemLose.position, areaItemLose.localScale);
     }
 }

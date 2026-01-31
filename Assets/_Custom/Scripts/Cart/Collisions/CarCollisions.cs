@@ -1,3 +1,4 @@
+using Scripts.Supermarket;
 using UnityEngine;
 
 public class CarCollisions : MonoBehaviour
@@ -11,13 +12,24 @@ public class CarCollisions : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        Cart cart = collision.rigidbody.GetComponent<Cart>();
-
-        Debug.Log("Collision with other cart. Cart is null: " + (cart == null).ToString());
-
-        if (cart != null)
+        if (collision.rigidbody != null)
         {
-            _cartCollisionHandler.CollisionWithOtherCart(cart.GetComponent<CartCollisionHandler>());
+            Cart cart = collision.rigidbody.GetComponent<Cart>();
+
+            Debug.Log("Collision with other cart. Cart is null: " + (cart == null).ToString());
+
+            if (cart != null)
+            {
+                _cartCollisionHandler.CollisionWithOtherCart(cart.GetComponent<CartCollisionHandler>());
+            }
+            else
+            {
+                _cartCollisionHandler.CollisionWithSomething();
+            }
+        }
+        else
+        {
+            _cartCollisionHandler.CollisionWithSomething();
         }
     }
 }

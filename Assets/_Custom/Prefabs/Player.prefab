@@ -257,6 +257,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CartCollisionHandler
   minVelocityForHit: 8
+  cartCrashConfig: {fileID: 11400000, guid: 4853757faa6b6f84b96ef0137f6bec1c, type: 2}
 --- !u!114 &9057464639772078941
 MonoBehaviour:
   m_ObjectHideFlags: 0
