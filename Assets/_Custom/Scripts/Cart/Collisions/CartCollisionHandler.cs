@@ -36,7 +36,7 @@ public class CartCollisionHandler : MonoBehaviour
 
         Debug.Log("Cur self velocity: " + selfVelocity);
 
-        audioSourceCartCollision.Play();
+        //audioSourceCartCollision.Play();
 
         if (selfVelocity < minVelocityForHit)
         {
@@ -66,7 +66,7 @@ public class CartCollisionHandler : MonoBehaviour
         _cart.ResetCurrentDashFactor();
 
 
-        audioSourceCartCollision.Play();
+        //audioSourceCartCollision.Play();
 
         float selfVelocity = _cart.MovingAverageVelocity.GetValueInPast(0.2f);
 
