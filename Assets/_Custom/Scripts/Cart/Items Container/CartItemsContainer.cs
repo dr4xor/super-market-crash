@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class CartItemsContainer : MonoBehaviour
 {
-    [SerializeField] private GameObject prefabItemExample;
+    [SerializeField] private ItemFacade prefabItemExample;
     [SerializeField] private Transform spawnOfExampleItem;
     [SerializeField] private Transform posOfItemToFlyTo;
     [SerializeField] private AnimationCurve yHeightFlyCurve;
@@ -15,16 +15,16 @@ public class CartItemsContainer : MonoBehaviour
 
     public void InstantiateAndAddItemToCart()
     {
-        GameObject goItem = Instantiate(prefabItemExample);
+        var goItem = Instantiate(prefabItemExample);
         goItem.transform.position = spawnOfExampleItem.position;
         AddItemToCart(goItem);
     }   
     
-    public void AddItemToCart(GameObject goItem)
+    public void AddItemToCart(ItemFacade item)
     {
-        setLayerRecursively(goItem, LayerMask.NameToLayer(layerOfItems));
-        goItem.GetComponent<Rigidbody>().isKinematic = true;
-        CartFlyingItem cartFlyingItem = goItem.AddComponent<CartFlyingItem>();
+        setLayerRecursively(item.gameObject, LayerMask.NameToLayer(layerOfItems));
+        item.GetComponent<Rigidbody>().isKinematic = true;
+        CartFlyingItem cartFlyingItem = item.gameObject.AddComponent<CartFlyingItem>();
         cartFlyingItem.StartFlying(flyTime, yHeightFlyCurve, posOfItemToFlyTo);
         
         cartFlyingItem.OnFlyingFinished += OnFlyingFinished;

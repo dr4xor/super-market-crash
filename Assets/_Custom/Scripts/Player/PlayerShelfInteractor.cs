@@ -23,8 +23,13 @@ public class PlayerShelfInteractor : MonoBehaviour
         {
             if (_shelfInRange.TryTakeItem(out var item))
             {
-                //itemsContainer.AddItem(item);
+                itemsContainer.AddItemToCart(item);
             }
         }
+    }
+    
+    public void OnInteractCancel()
+    {
+        // cancel item gathering
     }
 }
