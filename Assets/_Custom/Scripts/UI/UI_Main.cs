@@ -6,6 +6,8 @@ public class UI_Main : MonoBehaviour
     [Header("References")]
     [SerializeField] private Transform playerStatsContainer;
     [SerializeField] private UI_PlayerStats playerStatsPrefab;
+    [SerializeField] private UI_PickupHUD pickupHudPrefab;
+    [SerializeField] private Transform pickupHudContainer;
 
     private readonly Dictionary<Player, UI_PlayerStats> _playerStatsByPlayer = new();
 
@@ -41,6 +43,23 @@ public class UI_Main : MonoBehaviour
         _playerStatsByPlayer.Remove(player);
         if (stats != null && stats.gameObject != null)
             Destroy(stats.gameObject);
+    }
+
+    /// <summary>
+    /// Spawns a PickupHUD that follows a world-space transform, converting it to display space each frame.
+    /// </summary>
+    /// <param name="worldTransform">The transform in world space to follow (e.g. item or pickup point).</param>
+    /// <param name="player">Optional. The player whose color is used for the HUD background.</param>
+    /// <returns>The created UI_PickupHUD instance, or null if prefab not set.</returns>
+    public UI_PickupHUD SpawnPickupHUD(Transform worldTransform, Player player = null)
+    {
+        if (worldTransform == null || pickupHudPrefab == null)
+            return null;
+
+        Transform parent = pickupHudContainer != null ? pickupHudContainer : transform;
+        var instance = Instantiate(pickupHudPrefab, parent);
+        instance.Initialize(worldTransform, player);
+        return instance;
     }
 
     /// <summary>
