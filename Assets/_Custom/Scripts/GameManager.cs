@@ -100,9 +100,9 @@ public class GameManager : MonoBehaviour
             _uiManagerInstance.RemovePlayer(player);
 
         // Notify MainMenuManager
-        var mainMenuManager = GetComponent<MainMenuManager>();
-        if (mainMenuManager != null)
-            mainMenuManager.OnPlayerLeft(player);
+        // var mainMenuManager = GetComponent<MainMenuManager>();
+        // if (mainMenuManager != null)
+        //     mainMenuManager.OnPlayerLeft(player);
     }
 
     private void EnsureUIManagerExists()
