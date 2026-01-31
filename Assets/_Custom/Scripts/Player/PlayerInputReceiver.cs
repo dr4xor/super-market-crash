@@ -7,6 +7,7 @@ public class PlayerInputReceiver : MonoBehaviour
     private Cart _cart;
     private CartItemsContainer _cartItemsContainer;
     private PlayerShelfInteractor _playerShelfInteractor;
+    private PlayerCheckoutInteractor _playerCheckoutInteractor;
     private PlayerCharacter _playerCharacter;
 
     private void Start()
@@ -15,6 +16,7 @@ public class PlayerInputReceiver : MonoBehaviour
         _cart = GetComponent<Cart>();
         _cartItemsContainer = GetComponentInChildren<CartItemsContainer>();
         _playerShelfInteractor = GetComponent<PlayerShelfInteractor>();
+        _playerCheckoutInteractor = GetComponent<PlayerCheckoutInteractor>();
         _playerCharacter = GetComponent<PlayerCharacter>();
 
         var eastAction = _playerInput.actions["East"];
@@ -105,6 +107,7 @@ public class PlayerInputReceiver : MonoBehaviour
 
         Debug.Log("OnEastUp");
         _playerShelfInteractor.OnInteractCancel();
+        _playerCheckoutInteractor.OnInteractCancel();
     }
 
     private void OnEastDown(InputAction.CallbackContext context)
@@ -114,5 +117,6 @@ public class PlayerInputReceiver : MonoBehaviour
 
         Debug.Log("OnEastDown");
         _playerShelfInteractor.OnInteract();
+        _playerCheckoutInteractor.OnInteract();
     }
 }

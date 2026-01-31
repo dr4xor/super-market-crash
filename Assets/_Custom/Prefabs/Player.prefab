@@ -122,6 +122,7 @@ GameObject:
   - component: {fileID: 4154173942793615091}
   - component: {fileID: 7601734871157741964}
   - component: {fileID: 7008706308582849234}
+  - component: {fileID: 819264941043767883}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -385,6 +386,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Player
   playerId: 0
   money: 100
+  selectedCharacter: {fileID: 0}
+  selectedSkinIndex: 0
 --- !u!114 &4154173942793615091
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -436,6 +439,20 @@ CapsuleCollider:
   m_Height: 2.09
   m_Direction: 2
   m_Center: {x: 0, y: 0.56, z: 0.35}
+--- !u!114 &819264941043767883
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6224988939651710230}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fc7af5947cba55439e115042f62ac6f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerCheckoutInteractor
+  itemsContainer: {fileID: 1782204482793303468}
+  checkoutSprite: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
 --- !u!1 &6512023204539800105
 GameObject:
   m_ObjectHideFlags: 0
