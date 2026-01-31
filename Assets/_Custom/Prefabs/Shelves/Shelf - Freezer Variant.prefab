@@ -208,6 +208,10 @@ PrefabInstance:
       propertyPath: shelfItemPositions.Array.size
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 5817870046046959890, guid: 6313f8d67f9ada7468dced7e950d39f0, type: 3}
+      propertyPath: shouldSpawnRandomAmountOfItems
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5888794134410142567, guid: 6313f8d67f9ada7468dced7e950d39f0, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.5849999

@@ -886,10 +886,10 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  flyTime: 0.5
-  velocityWhenFlyingFinished: {x: 0, y: -10, z: 0}
+  flyTime: 0.3
+  velocityWhenFlyingFinished: {x: 0, y: -20, z: 0}
   layerOfItems: ItemInCart
-  timeUntilFreezeItems: 0.5
+  timeUntilFreezeItems: 0.25
   itemTemplates:
   - {fileID: 11400000, guid: 824bbf0af67594c65aa0746131e86179, type: 2}
   - {fileID: 11400000, guid: 36ff6990baee7c7c600ffcdb66f994f6, type: 2}
@@ -1016,8 +1016,8 @@ MonoBehaviour:
   dragWhenInCart: 0
   angDragWhenInCart: 0.05
   areaItemLose: {fileID: 3907946534289167929}
-  flyAwaySpeed: 3
-  flyAwayAngularSpeed: 2
+  flyAwaySpeed: 5
+  flyAwayAngularSpeed: 10
   freezeVelocityThreshold: 1
   timeForVelocityUnderThreshold: 0.25
   areaOutsideCart: {fileID: 4158988834179591791}

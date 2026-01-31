@@ -171,6 +171,7 @@ MonoBehaviour:
   shelfItemCount: 8
   shelfType: 0
   shouldSpawnRandomItem: 1
+  shouldSpawnRandomAmountOfItems: 1
 --- !u!65 &6701322961822548574
 BoxCollider:
   m_ObjectHideFlags: 0

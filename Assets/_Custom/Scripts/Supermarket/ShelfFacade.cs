@@ -19,6 +19,7 @@ namespace Scripts.Supermarket
         public int shelfItemCount;
         public ShelfType shelfType;
         public bool shouldSpawnRandomItem;
+        public bool shouldSpawnRandomAmountOfItems;
 
 
         private readonly List<ItemFacade> _shelfItems = new();
@@ -38,6 +39,10 @@ namespace Scripts.Supermarket
             if (shouldSpawnRandomItem)
             {
                 itemTemplate = getRandomItemTemplate();
+            }
+            if (shouldSpawnRandomAmountOfItems)
+            {
+                shelfItemCount = Random.Range(2, 8);
             }
 
             image.sprite = itemTemplate.sprite;
