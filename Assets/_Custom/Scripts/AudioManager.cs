@@ -28,6 +28,9 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioClip gameplayMusic;
     [SerializeField] [Min(0.1f)] private float musicCrossfadeDuration = 2f;
 
+    [Header("Game Sounds")]
+    [SerializeField] private AudioClip countdownSound;
+
     [Header("Audio Mixer (optional)")]
     [Tooltip("Assign a mixer with Music and SFX groups. Expose volume parameters for runtime control.")]
     [SerializeField] private AudioMixer audioMixer;
@@ -152,6 +155,49 @@ public class AudioManager : MonoBehaviour
 
         _musicSourceA.Stop();
         _musicSourceB.Stop();
+        _currentMusicType = null;
+    }
+
+    /// <summary>
+    /// Fades out the current music over the specified duration.
+    /// </summary>
+    public void FadeOutMusic(float duration = -1f)
+    {
+        if (duration < 0f)
+            duration = musicCrossfadeDuration;
+
+        if (_crossfadeRoutine != null)
+        {
+            StopCoroutine(_crossfadeRoutine);
+            _crossfadeRoutine = null;
+        }
+
+        _crossfadeRoutine = StartCoroutine(FadeOutMusicCoroutine(duration));
+    }
+
+    private IEnumerator FadeOutMusicCoroutine(float duration)
+    {
+        AudioSource activeSource = _musicSourceA.isPlaying ? _musicSourceA : (_musicSourceB.isPlaying ? _musicSourceB : null);
+        if (activeSource == null)
+        {
+            _crossfadeRoutine = null;
+            yield break;
+        }
+
+        float startVolume = activeSource.volume;
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.unscaledDeltaTime;
+            activeSource.volume = Mathf.Lerp(startVolume, 0f, elapsed / duration);
+            yield return null;
+        }
+
+        activeSource.Stop();
+        activeSource.volume = audioMixer != null ? 1f : musicVolume;
+        _currentMusicType = null;
+        _crossfadeRoutine = null;
     }
 
     /// <summary>
@@ -165,6 +211,20 @@ public class AudioManager : MonoBehaviour
             _sfxSource.volume = sfxVolume;
 
         _sfxSource.PlayOneShot(clip);
+    }
+
+    /// <summary>
+    /// Plays the countdown sound effect used before game start.
+    /// </summary>
+    public void PlayCountdownSound()
+    {
+        if (countdownSound == null)
+        {
+            Debug.LogWarning("AudioManager: No countdown sound assigned.");
+            return;
+        }
+
+        PlaySFX(countdownSound);
     }
 
     /// <summary>

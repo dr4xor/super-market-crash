@@ -7,7 +7,7 @@ public class UI_PickupHUD : MonoBehaviour
     [Header("References")]
     [SerializeField] private Slider progressSlider;
     [SerializeField] private Image itemSprite;
-    [SerializeField] private Image backgroundImage;
+    [SerializeField] private Image[] backgroundImages;
 
     [Header("World Follow")]
     [SerializeField] private Camera worldCamera;
@@ -32,8 +32,9 @@ public class UI_PickupHUD : MonoBehaviour
     {
         _worldFollowTarget = worldTransform;
 
-        if (backgroundImage != null && player != null)
-            backgroundImage.color = player.Color;
+        if (backgroundImages != null && player != null)
+            foreach (var backgroundImage in backgroundImages)
+                backgroundImage.color = player.Color;
 
         if (itemSprite != null && sprite != null)
             itemSprite.sprite = sprite;

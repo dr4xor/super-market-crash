@@ -406,7 +406,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UI_PickupHUD
   progressSlider: {fileID: 4026016722615736816}
   itemSprite: {fileID: 5682407443108729494}
-  backgroundImage: {fileID: 1594780578833004393}
+  backgroundImages:
+  - {fileID: 1594780578833004393}
+  - {fileID: 8110285322370585627}
   worldCamera: {fileID: 0}
 --- !u!1 &3240436214446594691
 GameObject:

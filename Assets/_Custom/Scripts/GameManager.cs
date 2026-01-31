@@ -47,6 +47,7 @@ public class GameManager : MonoBehaviour
     }
 
     public bool IsInMainMenu => currentState is MainMenu;
+    public bool IsStarting => currentState is Starting;
     public bool IsInGame => currentState is InGame;
 
     public ItemDatabase ItemDatabase => itemDatabase;
@@ -76,9 +77,9 @@ public class GameManager : MonoBehaviour
 
     public void StartGame()
     {
-        if (IsInGame) return;
-        
-        CurrentState = new InGame();
+        if (IsInGame || IsStarting) return;
+
+        CurrentState = new Starting();
     }
 
     /// <summary>

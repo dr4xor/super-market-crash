@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class InGame : GameState
 {
-    private const float TransitionDuration = 1f;
+    private const float TransitionDuration = 0f;
 
     public override void Enter()
     {
