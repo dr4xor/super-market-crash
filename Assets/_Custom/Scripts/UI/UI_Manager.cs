@@ -126,7 +126,7 @@ public class UI_Manager : MonoBehaviour
         foreach (var stats in _playerStatsByPlayer.Values)
         {
             if (stats != null)
-                stats.Refresh();
+                stats.RefreshAll();
         }
     }
 }
