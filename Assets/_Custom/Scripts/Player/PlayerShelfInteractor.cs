@@ -7,8 +7,8 @@ using UnityEngine;
 public class PlayerShelfInteractor : MonoBehaviour
 {
     [SerializeField] private CartItemsContainer itemsContainer;
+    
     private ShelfFacade _shelfInRange;
-
     private Player _player;
     private UI_PickupHUD _pickupHud;
     private TweenerCore<float, float, FloatOptions> _tween;
@@ -29,7 +29,7 @@ public class PlayerShelfInteractor : MonoBehaviour
             }
             if (_shelfInRange.HasItems)
             {
-                _pickupHud = UI_Manager.Instance.SpawnPickupHUD(_shelfInRange.transform, _shelfInRange.itemTemplate.sprite, _player);
+                _pickupHud = UI_Manager.Instance.SpawnPickupHUD(_shelfInRange.hudPosition, _shelfInRange.itemTemplate.sprite, _player);
             }
         }
     }

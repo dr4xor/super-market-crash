@@ -12,6 +12,7 @@ namespace Scripts.Supermarket
         [SerializeField] private List<Transform> shelfItemPositions;
         [SerializeField] private  ItemFacade itemPrefab;
         
+        public Transform hudPosition;
         public ItemTemplate itemTemplate;
         public int shelfItemCount;
         
