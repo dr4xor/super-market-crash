@@ -15,6 +15,8 @@ public class Player : MonoBehaviour
     [SerializeField] [Range(0, 3)] private int playerId;
     [SerializeField] private int money;
 
+    [SerializeField] private Transform cartParentTransform;
+
     [Header("Character Selection")]
     [SerializeField] private Character selectedCharacter;
     [SerializeField] private int selectedSkinIndex;
@@ -26,7 +28,11 @@ public class Player : MonoBehaviour
     public int PlayerId
     {
         get => playerId;
-        set => playerId = Mathf.Clamp(value, 0, 3);
+        set
+        {
+            playerId = Mathf.Clamp(value, 0, 3);
+            UpdateCartModel();
+        }
     }
 
     public int Money
@@ -64,6 +70,23 @@ public class Player : MonoBehaviour
 
     public Color Color => PlayerColors[PlayerId];
 
+
+    private void UpdateCartModel()
+    {
+        if (cartParentTransform == null) return;
+        if (GameManager.Instance == null) return;
+        if (GameManager.Instance.PlayerCartPrefabs == null || PlayerId >= GameManager.Instance.PlayerCartPrefabs.Length) return;
+
+        foreach (Transform child in cartParentTransform)
+        {
+            Destroy(child.gameObject);
+        }
+
+        var cartPrefab = GameManager.Instance.PlayerCartPrefabs[PlayerId];
+        if (cartPrefab == null) return;
+
+        Instantiate(cartPrefab, cartParentTransform);
+    }
     void Start()
     {
     }

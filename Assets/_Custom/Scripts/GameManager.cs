@@ -22,6 +22,8 @@ public class GameManager : MonoBehaviour
     [Header("References")]
     [SerializeField] private ItemDatabase itemDatabase;
     [SerializeField] private CharacterDatabase characterDatabase;
+    [SerializeField] private GameObject[] playerCartPrefabs;
+    public GameObject[] PlayerCartPrefabs => playerCartPrefabs;
 
     [Header("Prefabs")]
     [SerializeField] private UI_Manager uiManagerPrefab;
@@ -58,15 +60,15 @@ public class GameManager : MonoBehaviour
     
     private void Awake()
     {
-        if (startInPlayMode)
-            CurrentState = new InGame();
-
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
             return;
         }
         Instance = this;
+
+        if (startInPlayMode)
+            CurrentState = new InGame();
     }
 
     private void Start()

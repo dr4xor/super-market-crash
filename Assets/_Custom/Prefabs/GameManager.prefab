@@ -105,6 +105,11 @@ MonoBehaviour:
   startInPlayMode: 0
   itemDatabase: {fileID: 11400000, guid: 9702cb474f8344a259ffe409372c0821, type: 2}
   characterDatabase: {fileID: 11400000, guid: 5b457668798144b45ac45c7f445ef5b1, type: 2}
+  playerCartPrefabs:
+  - {fileID: 5216375491267760471, guid: 7a0474d453ca97f4c8fb05121c160896, type: 3}
+  - {fileID: 8425115431610392497, guid: e307654af9899a243aa07554023ec826, type: 3}
+  - {fileID: 7830140271181728394, guid: 0a0e73e4c2bdbfa4d8813bd3a9252415, type: 3}
+  - {fileID: 5081343423282808634, guid: c8e6fbbab3db5484ab56135d8d959a02, type: 3}
   uiManagerPrefab: {fileID: 7243581334443092646, guid: 10f86382b8abb4198a77b92519a86a91, type: 3}
 --- !u!114 &3646436299274902654
 MonoBehaviour:
