@@ -73,5 +73,16 @@ namespace Scripts.Supermarket
                 Gizmos.DrawSphere(shelfItemPositions[i].position, 0.1f);
             }
         }
+
+        [ContextMenu("Clear And Restock")]
+        private void clearAndRestock()
+        {
+            foreach (var item in _shelfItems)
+            {
+                Destroy(item.gameObject);
+            }
+            _shelfItems.Clear();
+            Restock();
+        }
     }
 }
