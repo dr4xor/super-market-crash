@@ -483,6 +483,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UI_PlayerStats
   backgroundImage: {fileID: 6417920204446296590}
+  characterIconImage: {fileID: 4561808364743781986}
   moneyText: {fileID: 3286388064243947532}
   playerNameText: {fileID: 8189975074777503635}
   shoppingListContainer: {fileID: 5422526976569932813}

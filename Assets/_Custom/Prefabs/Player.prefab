@@ -276,7 +276,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6224988939651710230}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76d862a8a60cbd3418b67b1b1fda452e, type: 3}
+  m_Script: {fileID: 11500000, guid: 5c5bf3f399214469188b5aa66f8cbc3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerInputReceiver
 --- !u!54 &5167698057565085135

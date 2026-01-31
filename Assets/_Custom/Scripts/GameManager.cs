@@ -5,7 +5,12 @@ using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviour
 {
+    public enum GameState { MainMenu, InGame }
+
     public static GameManager Instance { get; private set; }
+
+    [Header("State")]
+    [SerializeField] private GameState currentState = GameState.MainMenu;
 
     [Header("References")]
     [SerializeField] private ItemDatabase itemDatabase;
@@ -20,8 +25,14 @@ public class GameManager : MonoBehaviour
     // Track all active players
     private readonly List<Player> _activePlayers = new List<Player>();
 
-    // Track character selections: Player -> CharacterSelection
-    private readonly Dictionary<Player, CharacterSelection> _characterSelections = new Dictionary<Player, CharacterSelection>();
+    public GameState CurrentState
+    {
+        get => currentState;
+        set => currentState = value;
+    }
+
+    public bool IsInMainMenu => currentState == GameState.MainMenu;
+    public bool IsInGame => currentState == GameState.InGame;
 
     private void Awake()
     {
@@ -74,6 +85,10 @@ public class GameManager : MonoBehaviour
             player.SetShoppingList(shoppingList);
         }
 
+        // Set the default character selection for the player
+        player.SelectedCharacter = characterDatabase.GetCharacter(0);
+        player.SelectedSkinIndex = 0;
+
         var stats = _uiManagerInstance.AddPlayer(player);
         if (stats != null)
             stats.SetPlayerName($"Player {playerId + 1}");
@@ -92,17 +107,11 @@ public class GameManager : MonoBehaviour
         int playerId = player.PlayerId;
         _usedPlayerIds[playerId] = false;
 
-        // Remove from active players and clear character selection
+        // Remove from active players
         _activePlayers.Remove(player);
-        _characterSelections.Remove(player);
 
         if (_uiManagerInstance != null)
             _uiManagerInstance.RemovePlayer(player);
-
-        // Notify MainMenuManager
-        // var mainMenuManager = GetComponent<MainMenuManager>();
-        // if (mainMenuManager != null)
-        //     mainMenuManager.OnPlayerLeft(player);
     }
 
     private void EnsureUIManagerExists()
@@ -158,42 +167,25 @@ public class GameManager : MonoBehaviour
             Debug.LogWarning("GameManager: Cannot set character selection for null player.");
             return;
         }
-        
+
         if (character == null)
         {
             Debug.LogWarning("GameManager: Cannot set null character.");
             return;
         }
-        
+
         if (skinIndex < 0 || skinIndex >= character.GetSkinCount())
         {
             Debug.LogWarning($"GameManager: Invalid skinIndex {skinIndex}. Character '{character.characterName}' has {character.GetSkinCount()} skins.");
             skinIndex = Mathf.Clamp(skinIndex, 0, character.GetSkinCount() - 1);
         }
-        
-        _characterSelections[player] = new CharacterSelection
-        {
-            character = character,
-            skinIndex = skinIndex
-        };
-        
+
+        player.SelectedCharacter = character;
+        player.SelectedSkinIndex = skinIndex;
+
         Debug.Log($"GameManager: Player {player.PlayerId} selected character '{character.characterName}' with skin {skinIndex}");
     }
-    
-    /// <summary>
-    /// Gets the character selection for a specific player. Returns null if not set.
-    /// </summary>
-    public CharacterSelection? GetCharacterSelection(Player player)
-    {
-        if (player == null)
-            return null;
-            
-        if (_characterSelections.TryGetValue(player, out var selection))
-            return selection;
-        
-        return null;
-    }
-    
+
     /// <summary>
     /// Checks if a character is already selected by any player (useful for preventing duplicates).
     /// </summary>
@@ -204,30 +196,12 @@ public class GameManager : MonoBehaviour
     {
         if (character == null)
             return false;
-            
-        foreach (var kvp in _characterSelections)
+
+        foreach (var player in _activePlayers)
         {
-            if (kvp.Key != excludePlayer && kvp.Value.character == character)
+            if (player != excludePlayer && player.SelectedCharacter == character)
                 return true;
         }
         return false;
     }
-    
-    /// <summary>
-    /// Gets all current character selections.
-    /// </summary>
-    public Dictionary<Player, CharacterSelection> GetAllCharacterSelections()
-    {
-        return new Dictionary<Player, CharacterSelection>(_characterSelections);
-    }
-}
-
-/// <summary>
-/// Data structure to store a player's character selection.
-/// </summary>
-[System.Serializable]
-public struct CharacterSelection
-{
-    public Character character;
-    public int skinIndex;
 }

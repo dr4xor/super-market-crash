@@ -49,11 +49,14 @@ public class PlayerCharacterEditor : Editor
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField("Character:", GUILayout.Width(70));
 
+        var player = playerCharacter.GetComponent<Player>();
+
         if (GUILayout.Button("◄", GUILayout.Width(30)))
         {
             int prevIndex = currentCharacterIndex - 1;
             if (prevIndex < 0) prevIndex = characterDatabase.GetCharacterCount() - 1;
             playerCharacter.SetCharacter(characterDatabase.GetCharacter(prevIndex), 0);
+            UpdatePlayerSelection(player, playerCharacter);
         }
 
         string charName = playerCharacter.CurrentCharacter != null
@@ -66,6 +69,7 @@ public class PlayerCharacterEditor : Editor
         {
             int nextIndex = (currentCharacterIndex + 1) % characterDatabase.GetCharacterCount();
             playerCharacter.SetCharacter(characterDatabase.GetCharacter(nextIndex), 0);
+            UpdatePlayerSelection(player, playerCharacter);
         }
 
         EditorGUILayout.EndHorizontal();
@@ -79,6 +83,7 @@ public class PlayerCharacterEditor : Editor
             if (GUILayout.Button("◄", GUILayout.Width(30)))
             {
                 playerCharacter.PreviousSkin();
+                UpdatePlayerSelection(player, playerCharacter);
             }
 
             string skinLabel = $"Skin {playerCharacter.CurrentSkinIndex + 1}/{playerCharacter.CurrentCharacter.GetSkinCount()}";
@@ -87,6 +92,7 @@ public class PlayerCharacterEditor : Editor
             if (GUILayout.Button("►", GUILayout.Width(30)))
             {
                 playerCharacter.NextSkin();
+                UpdatePlayerSelection(player, playerCharacter);
             }
 
             EditorGUILayout.EndHorizontal();
@@ -96,5 +102,14 @@ public class PlayerCharacterEditor : Editor
 
         // Current state info
         EditorGUILayout.HelpBox(playerCharacter.GetCharacterInfo(), MessageType.None);
+    }
+
+    private void UpdatePlayerSelection(Player player, PlayerCharacter playerCharacter)
+    {
+        if (player == null || playerCharacter.CurrentCharacter == null)
+            return;
+
+        player.SelectedCharacter = playerCharacter.CurrentCharacter;
+        player.SelectedSkinIndex = playerCharacter.CurrentSkinIndex;
     }
 }

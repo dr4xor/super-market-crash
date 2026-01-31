@@ -8,6 +8,7 @@ public class UI_PlayerStats : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private Image backgroundImage;
+    [SerializeField] private Image characterIconImage;
     [SerializeField] private TextMeshProUGUI moneyText;
     [SerializeField] private TextMeshProUGUI playerNameText;
     [SerializeField] private Transform shoppingListContainer;
@@ -51,7 +52,27 @@ public class UI_PlayerStats : MonoBehaviour
         if (moneyText != null)
             moneyText.text = _player.Money.ToString();
 
+        RefreshCharacterIcon();
         RefreshShoppingListCollected();
+    }
+
+    /// <summary>
+    /// Updates the character icon based on the player's current character selection.
+    /// </summary>
+    private void RefreshCharacterIcon()
+    {
+        if (characterIconImage == null || _player == null)
+            return;
+
+        if (_player.SelectedCharacter != null)
+        {
+            characterIconImage.sprite = _player.SelectedCharacter.icon;
+            characterIconImage.enabled = true;
+        }
+        else
+        {
+            characterIconImage.enabled = false;
+        }
     }
 
     /// <summary>

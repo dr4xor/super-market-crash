@@ -179,7 +179,47 @@ public class PlayerCharacter : MonoBehaviour
     {
         if (currentCharacter == null)
             return "No character selected";
-        
+
         return $"{currentCharacter.characterName} (Skin {currentSkinIndex + 1}/{currentCharacter.GetSkinCount()})";
+    }
+
+    /// <summary>
+    /// Switches to the next or previous character in the database.
+    /// </summary>
+    /// <param name="direction">1 for next, -1 for previous</param>
+    public void SwitchCharacter(int direction)
+    {
+        var db = GameManager.Instance?.CharacterDatabase;
+        if (db == null || db.GetCharacterCount() == 0)
+            return;
+
+        var player = GetComponent<Player>();
+        int currentIndex = db.characters.IndexOf(player.SelectedCharacter);
+        if (currentIndex < 0) currentIndex = 0;
+
+        int newIndex = (currentIndex + direction + db.GetCharacterCount()) % db.GetCharacterCount();
+        var newCharacter = db.GetCharacter(newIndex);
+
+        player.SelectedCharacter = newCharacter;
+        player.SelectedSkinIndex = 0;
+        SetCharacter(newCharacter, 0);
+    }
+
+    /// <summary>
+    /// Switches to the next or previous skin variation.
+    /// </summary>
+    /// <param name="direction">1 for next, -1 for previous</param>
+    public void SwitchVariation(int direction)
+    {
+        var player = GetComponent<Player>();
+        if (player.SelectedCharacter == null)
+            return;
+
+        int skinCount = player.SelectedCharacter.GetSkinCount();
+        if (skinCount == 0) return;
+
+        int newSkin = (player.SelectedSkinIndex + direction + skinCount) % skinCount;
+        player.SelectedSkinIndex = newSkin;
+        SetSkin(newSkin);
     }
 }
