@@ -15,6 +15,10 @@ public class Player : MonoBehaviour
     [SerializeField] [Range(0, 3)] private int playerId;
     [SerializeField] private int money;
 
+    [Header("Character Selection")]
+    [SerializeField] private Character selectedCharacter;
+    [SerializeField] private int selectedSkinIndex;
+
     private Dictionary<ItemTemplate, int> _shoppingList = new();
     private Dictionary<ItemTemplate, int> _itemsInCart = new();
     private Dictionary<ItemTemplate, int> _boughtItems = new();
@@ -29,6 +33,18 @@ public class Player : MonoBehaviour
     {
         get => money;
         set => money = value;
+    }
+
+    public Character SelectedCharacter
+    {
+        get => selectedCharacter;
+        set => selectedCharacter = value;
+    }
+
+    public int SelectedSkinIndex
+    {
+        get => selectedSkinIndex;
+        set => selectedSkinIndex = value;
     }
 
     public Dictionary<ItemTemplate, int> ShoppingList => _shoppingList;

@@ -43,6 +43,21 @@ public class CartItemsContainer : MonoBehaviour
         AddItemToCart(goItem);
     }
 
+    public void ClearCartAndSetAllItemsAsBought()
+    {
+        copyAllItemsInCartToBoughtItems();
+
+        _itemsInCart.Clear();
+        _freezeItemsIn.Clear();
+
+        updatePlayerItemsInCartData();
+
+        for (int i = 0; i < _itemsInCart.Count; i++)
+        {
+            Destroy(_itemsInCart[i].gameObject, Random.Range(0.0f, 0.7f));
+        }
+    }
+
     public void LoseItems(int amountOfItemsToLose)
     {
         for (int i = 0; i < amountOfItemsToLose; i++)
@@ -53,6 +68,7 @@ public class CartItemsContainer : MonoBehaviour
             _freezeItemsIn.RemoveAt(randomIndex);
 
             itemToLose.gameObject.AddComponent<Rigidbody>();
+            enableAllCollidersInChildren(itemToLose.gameObject, true);
             
             itemToLose.transform.position = getRandomPositionInArea();
             itemToLose.transform.parent = null;
@@ -125,6 +141,7 @@ public class CartItemsContainer : MonoBehaviour
                     _itemsInCart[i].transform.parent = transform;
                     _itemsInCart[i].GetComponent<Rigidbody>().isKinematic = true;
                     Destroy(_itemsInCart[i].GetComponent<Rigidbody>());
+                    enableAllCollidersInChildren(_itemsInCart[i].gameObject, false);
                 }
             }
             else
@@ -146,6 +163,21 @@ public class CartItemsContainer : MonoBehaviour
             else
             {
                 _player.ItemsInCart[_itemsInCart[i].ItemTemplate] = 1;
+            }
+        }
+    }
+
+    private void copyAllItemsInCartToBoughtItems()
+    {
+        for (int i = 0; i < _itemsInCart.Count; i++)
+        {
+            if (_player.BoughtItems.ContainsKey(_itemsInCart[i].ItemTemplate))
+            {
+                _player.BoughtItems[_itemsInCart[i].ItemTemplate] += 1;
+            }
+            else
+            {
+                _player.BoughtItems[_itemsInCart[i].ItemTemplate] = 1;
             }
         }
     }
@@ -200,6 +232,14 @@ public class CartItemsContainer : MonoBehaviour
                 _itemsInCart[i].transform.position = posOfItemToFlyTo.position;
                 _itemsInCart[i].GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
             }
+        }
+    }
+
+    private void enableAllCollidersInChildren(GameObject go, bool colliderEnabled)
+    {
+        foreach (Collider collider in go.GetComponentsInChildren<Collider>())
+        {
+            collider.enabled = colliderEnabled;
         }
     }
 }

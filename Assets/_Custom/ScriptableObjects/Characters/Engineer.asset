@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d443ab9dce79349b5812bf2a1c66698b, type: 3}
+  m_Name: Engineer
+  m_EditorClassIdentifier: Assembly-CSharp::ScriptableObjects.Character
+  characterName: Engineer
+  icon: {fileID: 21300000, guid: 57304dbea7761324f85b735bdcb32e1b, type: 3}
+  characterPrefab: {fileID: 919132149155446097, guid: 6836de3d369291043832cd011ae12520, type: 3}
+  skins:
+  - {fileID: 2100000, guid: 66d43f6de7d5faf40a0ffcd681a6a237, type: 2}
+  - {fileID: 2100000, guid: c451b379d8269429b86484a503babcdf, type: 2}
+  - {fileID: 2100000, guid: b9e70de655fa4c44bdae9e090f70b61c, type: 2}
+  - {fileID: 2100000, guid: be1147a8a4f74db199454fe890883757, type: 2}

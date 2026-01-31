@@ -1,4 +1,4 @@
-using System;
+using System.Collections.Generic;
 using DG.Tweening;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
@@ -8,8 +8,9 @@ using UnityEngine;
 public class PlayerShelfInteractor : MonoBehaviour
 {
     [SerializeField] private CartItemsContainer itemsContainer;
-    private ShelfFacade _shelfInRange;
 
+    private readonly HashSet<ShelfFacade> _shelvesInRange = new ();
+    private ShelfFacade _closestShelf;
     private Player _player;
     private UI_PickupHUD _pickupHud;
     private TweenerCore<float, float, FloatOptions> _tween;
@@ -19,50 +20,85 @@ public class PlayerShelfInteractor : MonoBehaviour
         _player = GetComponent<Player>();
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void Update()
     {
-        if (other.TryGetComponent(out _shelfInRange))
-        {
-            if (!_pickupHud && _shelfInRange.HasItems)
-            {
-                print(DateTime.Now.ToLongTimeString() + " Enter shelf");
-                _pickupHud = UI_Manager.Instance.SpawnPickupHUD(_shelfInRange.transform, _shelfInRange.itemTemplate, _player);
-            }
-        }
+        UpdateClosestShelf();
     }
-    
-    private void OnTriggerExit(Collider other)
+
+    private void UpdateClosestShelf()
     {
-        if (other.TryGetComponent(out _shelfInRange))
+        ShelfFacade newClosest = null;
+        var closestDistance = float.MaxValue;
+
+        foreach (var shelf in _shelvesInRange)
         {
-            print(DateTime.Now.ToLongTimeString() + " Exit shelf");
-            print(_pickupHud);
-            if (_pickupHud)
+            if (!shelf)
             {
-                Destroy(_pickupHud.gameObject);
-                print(DateTime.Now.ToLongTimeString() + " Destroyed");
+                continue;
             }
 
-            _shelfInRange = null;
+            var distance = Vector3.Distance(transform.position, shelf.transform.position);
+            if (distance < closestDistance)
+            {
+                closestDistance = distance;
+                newClosest = shelf;
+            }
+        }
+
+        if (newClosest != _closestShelf)
+        {
+            _closestShelf = newClosest;
+            UpdateHUD();
+        }
+        else if (_closestShelf && !_pickupHud && _closestShelf.HasItems)
+        {
+            UpdateHUD();
+        }
+    }
+
+    private void UpdateHUD()
+    {
+        if (_pickupHud)
+        {
+            Destroy(_pickupHud.gameObject);
+            _pickupHud = null;
+        }
+
+        if (_closestShelf && _closestShelf.HasItems)
+        {
+            _pickupHud = UI_Manager.Instance.SpawnPickupHUD(_closestShelf.hudPosition, _closestShelf.itemTemplate.sprite, _player);
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.TryGetComponent(out ShelfFacade colliderShelf))
+        {
+            _shelvesInRange.Add(colliderShelf);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.TryGetComponent(out ShelfFacade colliderShelf))
+        {
+            _shelvesInRange.Remove(colliderShelf);
         }
     }
 
     public void OnInteract()
     {
-        print(DateTime.Now.ToLongTimeString() + " Interact");
-        if (_shelfInRange && _shelfInRange.HasItems)
+        if (_closestShelf && _closestShelf.HasItems)
         {
-            _tween = DOTween.To(() => 0f, x => _pickupHud.SetProgress(x), 1f, 5f)
+            _tween = DOTween.To(() => 0f, x => _pickupHud.SetProgress(x), 1f, 2f)
                 .SetEase(Ease.Linear)
                 .SetLink(_pickupHud.gameObject)
                 .OnComplete(() =>
                 {
-                    print(DateTime.Now.ToLongTimeString() + " Take complete");
-                    if (_shelfInRange.TryTakeItem(out var item))
+                    if (_closestShelf.TryTakeItem(out var item))
                     {
-                        print(DateTime.Now.ToLongTimeString() + " Take success");
                         itemsContainer.AddItemToCart(item);
-                        if (_shelfInRange.HasItems == false)
+                        if (_closestShelf.HasItems == false)
                         {
                             Destroy(_pickupHud.gameObject);
                         }

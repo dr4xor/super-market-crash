@@ -21,6 +21,10 @@ public class Cart : MonoBehaviour
     [SerializeField] private bool useButtonMashDash;
     [SerializeField] private float buttonMashMaxTimeBetweenPresses = 0.17f;
     [SerializeField] private int buttonMashMaxAccumulatedPresses = 10;
+    [Space]
+    [Header("Particles")]
+    [SerializeField] private ParticleSystem sprintParticles;
+    [SerializeField] private AnimationCurve sprintPartsEmissionByByDashFactor;
 
     /*
     [Header("Movement")]
@@ -59,6 +63,9 @@ public class Cart : MonoBehaviour
     private MovingAverage<float> _movingAverageVelocity = new MovingAverage<float>(64);
     public MovingAverage<float> MovingAverageVelocity => _movingAverageVelocity;
 
+
+    private float _curDashFactor = 0f;
+
     private void Start()
     {
         _rigidbody = GetComponent<Rigidbody>();
@@ -79,7 +86,11 @@ public class Cart : MonoBehaviour
     {
         float dashFactor = handleDash();
 
-        Vector3 desiredVelocity = _moveInput * Mathf.Lerp(maxSpeed, maxSpeedDashing, dashFactor);
+
+        _curDashFactor = Mathf.MoveTowards(_curDashFactor, dashFactor, Time.fixedDeltaTime * 4f);
+
+        float curMaxSpeed = Mathf.Lerp(maxSpeed, maxSpeedDashing, dashFactor);
+        Vector3 desiredVelocity = _moveInput * curMaxSpeed;
 
         Vector3 forceDelta = desiredVelocity - _rigidbody.linearVelocity;
 
@@ -102,9 +113,9 @@ public class Cart : MonoBehaviour
 
         Vector3 currentVelocity = _rigidbody.linearVelocity;
         float currentSpeed = currentVelocity.magnitude;
-        if (currentSpeed > maxSpeed)
+        if (currentSpeed > curMaxSpeed)
         {
-            _rigidbody.linearVelocity = currentVelocity.normalized * maxSpeed;
+            _rigidbody.linearVelocity = currentVelocity.normalized * curMaxSpeed;
         }
 
         if (_moveInput.magnitude > 0.01f)
@@ -116,6 +127,8 @@ public class Cart : MonoBehaviour
             toRotate.rotation = Quaternion.RotateTowards(toRotate.rotation, targetRotation, rotationSpeed * Time.fixedDeltaTime);
         }
 
+        //Debug.Log("Current velocity: " + _rigidbody.linearVelocity.magnitude);
+
         _movingAverageVelocity.AddValue(_rigidbody.linearVelocity.magnitude);
 
         // Force clamp the rotation of the rigidbody to be flat
@@ -124,6 +137,8 @@ public class Cart : MonoBehaviour
         //_rigidbody.position = new Vector3(_rigidbody.position.x, fixedYPosition, _rigidbody.position.z);
 
         handleButtonMashDash();
+
+        updateParticleSystemEmission();
     }
 
     private float handleDash()
@@ -188,6 +203,20 @@ public class Cart : MonoBehaviour
             _accumulatedMashPresses = Mathf.Clamp(_accumulatedMashPresses, 0, buttonMashMaxAccumulatedPresses);
         }
     }
+
+
+    public void ResetCurrentDashFactor()
+    {
+        _accumulatedMashPresses = 0;
+    }
+
+    private void updateParticleSystemEmission()
+    {
+        float emissionFactor = sprintPartsEmissionByByDashFactor.Evaluate(_curDashFactor);
+        ParticleSystem.EmissionModule emission = sprintParticles.emission;
+        emission.rateOverDistance = emissionFactor;
+    }
+
     /*
         private void performDriftMovement()
         {

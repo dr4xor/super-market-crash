@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d443ab9dce79349b5812bf2a1c66698b, type: 3}
+  m_Name: Barbarian
+  m_EditorClassIdentifier: Assembly-CSharp::ScriptableObjects.Character
+  characterName: Barbarian
+  icon: {fileID: 21300000, guid: 8c46c102ad8e2954f92079d755364756, type: 3}
+  characterPrefab: {fileID: 919132149155446097, guid: 56b4a0ca8daa0154387f58eb3154ab99, type: 3}
+  skins:
+  - {fileID: 2100000, guid: 86dadf6ab13504647b383ec7c6559ece, type: 2}
+  - {fileID: 2100000, guid: b8190fffbf6e74aefb30c6dc8280ca6c, type: 2}
+  - {fileID: 2100000, guid: a07892aefdf9b46aca1a1412e65f94ec, type: 2}
+  - {fileID: 2100000, guid: fde471dc5d30948f987af04edf03e67b, type: 2}
