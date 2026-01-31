@@ -11,22 +11,24 @@ namespace Scripts.Supermarket
         [SerializeField] private Image image;
         [SerializeField] private List<Transform> shelfItemPositions;
         [SerializeField] private  ItemFacade itemPrefab;
+        [SerializeField] private  Transform restockingPosition;
         
         public Transform hudPosition;
         public ItemTemplate itemTemplate;
         public int shelfItemCount;
         
         private readonly List<ItemFacade> _shelfItems = new();
+
+        public delegate void ShelfItemsChangeEvent(ShelfFacade shelf, List<ItemFacade> items);
+        public event ShelfItemsChangeEvent OnShelfItemsChange;
+
+        public Transform RestockingPosition => restockingPosition;
         
         private void Start()
         {
             image.sprite = itemTemplate.sprite;
-            for (var i = 0; i < shelfItemCount; i++)
-            {
-                var item = Instantiate(itemPrefab, shelfItemPositions[i].position, Quaternion.identity);
-                item.Init(itemTemplate);
-                _shelfItems.Add(item);  
-            }
+            Restock();
+            RestockingManager.Instance.AddShelf(this);
         }
         
         public bool HasItems => _shelfItems.Any();
@@ -41,7 +43,27 @@ namespace Scripts.Supermarket
 
             item = _shelfItems.First();
             _shelfItems.Remove(item);
+            OnShelfItemsChange?.Invoke(this, _shelfItems);
             return true;
+        }
+
+        public void Restock()
+        {
+            for (var i = 0; i < shelfItemCount; i++)
+            {
+                var item = Instantiate(itemPrefab, shelfItemPositions[i].position, Quaternion.identity);
+                item.Init(itemTemplate);
+                _shelfItems.Add(item);
+            }
+        }
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.yellow;
+            for (int i = 0; i < shelfItemPositions.Count; i++)
+            {
+                Gizmos.DrawSphere(shelfItemPositions[i].position, 0.1f);
+            }
         }
     }
 }
