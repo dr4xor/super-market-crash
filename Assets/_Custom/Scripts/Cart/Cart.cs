@@ -21,6 +21,10 @@ public class Cart : MonoBehaviour
     [SerializeField] private bool useButtonMashDash;
     [SerializeField] private float buttonMashMaxTimeBetweenPresses = 0.17f;
     [SerializeField] private int buttonMashMaxAccumulatedPresses = 10;
+    [Space]
+    [Header("Particles")]
+    [SerializeField] private ParticleSystem sprintParticles;
+    [SerializeField] private AnimationCurve sprintPartsEmissionByByDashFactor;
 
     /*
     [Header("Movement")]
@@ -59,6 +63,9 @@ public class Cart : MonoBehaviour
     private MovingAverage<float> _movingAverageVelocity = new MovingAverage<float>(64);
     public MovingAverage<float> MovingAverageVelocity => _movingAverageVelocity;
 
+
+    private float _curDashFactor = 0f;
+
     private void Start()
     {
         _rigidbody = GetComponent<Rigidbody>();
@@ -78,6 +85,9 @@ public class Cart : MonoBehaviour
     private void FixedUpdate()
     {
         float dashFactor = handleDash();
+
+
+        _curDashFactor = Mathf.MoveTowards(_curDashFactor, dashFactor, Time.fixedDeltaTime * 4f);
 
         Vector3 desiredVelocity = _moveInput * Mathf.Lerp(maxSpeed, maxSpeedDashing, dashFactor);
 
@@ -124,6 +134,8 @@ public class Cart : MonoBehaviour
         //_rigidbody.position = new Vector3(_rigidbody.position.x, fixedYPosition, _rigidbody.position.z);
 
         handleButtonMashDash();
+
+        updateParticleSystemEmission();
     }
 
     private float handleDash()
@@ -188,6 +200,20 @@ public class Cart : MonoBehaviour
             _accumulatedMashPresses = Mathf.Clamp(_accumulatedMashPresses, 0, buttonMashMaxAccumulatedPresses);
         }
     }
+
+
+    public void ResetCurrentDashFactor()
+    {
+        _accumulatedMashPresses = 0;
+    }
+
+    private void updateParticleSystemEmission()
+    {
+        float emissionFactor = sprintPartsEmissionByByDashFactor.Evaluate(_curDashFactor);
+        ParticleSystem.EmissionModule emission = sprintParticles.emission;
+        emission.rateOverDistance = emissionFactor;
+    }
+
     /*
         private void performDriftMovement()
         {

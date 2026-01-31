@@ -14,6 +14,17 @@ namespace ScriptableObjects
             float damageCaused = speedDiffToDamageCurve.Evaluate(speedDiff);
             float vulnerability = itemsCountToVulnerabilityCurve.Evaluate(itemsInCart);
             float amountOfItemsToLose = damageCaused * vulnerability * (isAgainstOtherCart ? 1f : reductionIfNotAgainstOtherCart);
+            
+            if (isAgainstOtherCart)
+            {
+                Debug.Log("Cart collision. Speed diff: " + speedDiff + ", vulnerability: " + vulnerability + ", amount of items to lose: " + amountOfItemsToLose);
+            }
+            else
+            {
+                Debug.Log("Cart collision with something. Speed diff: " + speedDiff + ", vulnerability: " + vulnerability + ", amount of items to lose: " + amountOfItemsToLose);
+            }
+            
+            
             return Mathf.RoundToInt(amountOfItemsToLose);
         }
     }

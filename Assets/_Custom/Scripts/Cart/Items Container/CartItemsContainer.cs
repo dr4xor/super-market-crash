@@ -43,6 +43,21 @@ public class CartItemsContainer : MonoBehaviour
         AddItemToCart(goItem);
     }
 
+    public void ClearCartAndSetAllItemsAsBought()
+    {
+        copyAllItemsInCartToBoughtItems();
+
+        _itemsInCart.Clear();
+        _freezeItemsIn.Clear();
+
+        updatePlayerItemsInCartData();
+
+        for (int i = 0; i < _itemsInCart.Count; i++)
+        {
+            Destroy(_itemsInCart[i].gameObject, Random.Range(0.0f, 0.7f));
+        }
+    }
+
     public void LoseItems(int amountOfItemsToLose)
     {
         for (int i = 0; i < amountOfItemsToLose; i++)
@@ -146,6 +161,21 @@ public class CartItemsContainer : MonoBehaviour
             else
             {
                 _player.ItemsInCart[_itemsInCart[i].ItemTemplate] = 1;
+            }
+        }
+    }
+
+    private void copyAllItemsInCartToBoughtItems()
+    {
+        for (int i = 0; i < _itemsInCart.Count; i++)
+        {
+            if (_player.BoughtItems.ContainsKey(_itemsInCart[i].ItemTemplate))
+            {
+                _player.BoughtItems[_itemsInCart[i].ItemTemplate] += 1;
+            }
+            else
+            {
+                _player.BoughtItems[_itemsInCart[i].ItemTemplate] = 1;
             }
         }
     }
