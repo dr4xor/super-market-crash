@@ -10,6 +10,8 @@ public class PlayerInputReceiver : MonoBehaviour
     private PlayerCheckoutInteractor _playerCheckoutInteractor;
     private PlayerCharacter _playerCharacter;
 
+    private bool _characterSwitchReady = true;
+
     private void Start()
     {
         _playerInput = GetComponent<PlayerInput>();
@@ -22,6 +24,7 @@ public class PlayerInputReceiver : MonoBehaviour
         var eastAction = _playerInput.actions["East"];
         eastAction.started += OnEastDown;
         eastAction.canceled += OnEastUp;
+
     }
 
     private void OnInteract(InputValue inputValue)
@@ -34,7 +37,25 @@ public class PlayerInputReceiver : MonoBehaviour
 
         if (GameManager.Instance != null && GameManager.Instance.IsInMainMenu)
         {
-            // Cant move while in main menu
+            // Character switching with horizontal input
+            if (_characterSwitchReady)
+            {
+                if (moveDirection.x > 0.5f)
+                {
+                    _playerCharacter.SwitchCharacter(1);
+                    _characterSwitchReady = false;
+                }
+                else if (moveDirection.x < -0.5f)
+                {
+                    _playerCharacter.SwitchCharacter(-1);
+                    _characterSwitchReady = false;
+                }
+            }
+
+            // Reset when stick returns to center
+            if (Mathf.Abs(moveDirection.x) < 0.3f)
+                _characterSwitchReady = true;
+
             _cart.ProvideMoveDirection(Vector2.zero);
             return;
         }
@@ -42,34 +63,6 @@ public class PlayerInputReceiver : MonoBehaviour
         _cart.ProvideMoveDirection(moveDirection);
     }
 
-    private void OnNavigate(InputValue inputValue)
-    {
-        if (GameManager.Instance == null || !GameManager.Instance.IsInMainMenu)
-            return;
-
-        Vector2 input = inputValue.Get<Vector2>();
-
-        if (input.x > 0.5f)
-            _playerCharacter.SwitchCharacter(1);
-        else if (input.x < -0.5f)
-            _playerCharacter.SwitchCharacter(-1);
-    }
-
-    private void OnRightShoulder(InputValue inputValue)
-    {
-        if (GameManager.Instance == null || !GameManager.Instance.IsInMainMenu)
-            return;
-
-        _playerCharacter.SwitchVariation(1);
-    }
-
-    private void OnLeftShoulder(InputValue inputValue)
-    {
-        if (GameManager.Instance == null || !GameManager.Instance.IsInMainMenu)
-            return;
-
-        _playerCharacter.SwitchVariation(-1);
-    }
 
     private void OnSouth(InputValue inputValue)
     {
@@ -94,9 +87,11 @@ public class PlayerInputReceiver : MonoBehaviour
     private void OnWest(InputValue inputValue)
     {
         if (GameManager.Instance != null && GameManager.Instance.IsInMainMenu)
+        {
+            _playerCharacter.SwitchVariation(1);
             return;
+        }
 
-        Debug.Log("OnWest");
         _cart.PlayerAnimationController.GrabItem();
     }
 

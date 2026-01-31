@@ -38,7 +38,10 @@ public class InGame : GameState
             var shoppingList = ShoppingListGenerator.Generate(availableItems);
             player.SetShoppingList(shoppingList);
         }
-        
+
+        UI_Manager.Instance.Show(UI_Manager.UIType.PlayerStats);
+        UI_Manager.Instance.RefreshAllPlayers();
+        UI_Manager.Instance.Hide(UI_Manager.UIType.MainMenu);
     }
 
     public override void Exit()
@@ -50,5 +53,7 @@ public class InGame : GameState
             player.BoughtItems.Clear();
         }
         Debug.Log("InGame: Exit");
+
+        UI_Manager.Instance.Hide(UI_Manager.UIType.PlayerStats);
     }
 }

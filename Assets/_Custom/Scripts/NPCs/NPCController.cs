@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -12,7 +13,11 @@ public class NPCController : MonoBehaviour
     [SerializeField] private string animParamNameForRunning = "isRunning";
     [SerializeField] private AnimationCurve animSpeedByVelocity;
     [SerializeField] private float rotationSpeed = 1f;
+    
+    [Header("NPC SFX")] 
+    [SerializeField] private List<AudioClip> notAmusedSfxList;
 
+    private AudioSource _sfxSource;
     private Vector3 _origin;
     private Quaternion _originRotation;
     private Transform _curTarget;
@@ -42,6 +47,7 @@ public class NPCController : MonoBehaviour
 
     private void Start()
     {
+        _sfxSource = GetComponent<AudioSource>();
         _navMeshAgent = GetComponent<NavMeshAgent>();
         _animator = GetComponentInChildren<Animator>();
         _origin = transform.position;
@@ -121,6 +127,8 @@ public class NPCController : MonoBehaviour
 
     public void GoToTarget(Transform target, float timeToSpendAtTarget, string animParamAtTarget = "", bool isParamTrigger = false)
     {
+        var sfx = notAmusedSfxList[Random.Range(0, notAmusedSfxList.Count)];
+        _sfxSource.PlayOneShot(sfx);
         _curTarget = target;
         CurrentState = NPCState.GOING_TO_TARGET;
         _navMeshAgent.SetDestination(target.position);
