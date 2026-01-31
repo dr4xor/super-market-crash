@@ -734,6 +734,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 7472388596320190366}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6911056618921998907
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4158988834179591791}
+  m_Layer: 0
+  m_Name: Area Sanity
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4158988834179591791
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6911056618921998907}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.853, z: 1.327}
+  m_LocalScale: {x: 2.8597183, y: 6.588391, z: 3.0194714}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7472388596320190366}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7628611557143322997
 GameObject:
   m_ObjectHideFlags: 0
@@ -804,6 +835,7 @@ Transform:
   - {fileID: 6875298253948588760}
   - {fileID: 4457654318493081365}
   - {fileID: 3907946534289167929}
+  - {fileID: 4158988834179591791}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5657199875452722787
@@ -856,7 +888,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   flyTime: 0.5
   velocityWhenFlyingFinished: {x: 0, y: -10, z: 0}
-  layerOfItems: ShoppingCart
+  layerOfItems: ItemInCart
   timeUntilFreezeItems: 0.5
   itemTemplates:
   - {fileID: 11400000, guid: 824bbf0af67594c65aa0746131e86179, type: 2}
@@ -986,5 +1018,6 @@ MonoBehaviour:
   areaItemLose: {fileID: 3907946534289167929}
   flyAwaySpeed: 3
   flyAwayAngularSpeed: 2
-  freezeVelocityThreshold: 0.5
-  timeForVelocityUnderThreshold: 0.5
+  freezeVelocityThreshold: 1
+  timeForVelocityUnderThreshold: 0.25
+  areaOutsideCart: {fileID: 4158988834179591791}

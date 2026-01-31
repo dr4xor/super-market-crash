@@ -33,8 +33,14 @@ public class CartCollisionHandler : MonoBehaviour
             return;
         }
         
-        _cart.CartShaker.ShakeDueToCrash();
+        otherCartCollisionHandler._cart.CartShaker.ShakeDueToCrash();
+        
+        int amountOfItemsToLose = cartCrashConfig.ComputeAmountOfItemstoLose(
+            otherCartCollisionHandler._cart.CartItemsContainer.ItemsInCart.Count,
+            selfVelocity,
+            true);
 
+        otherCartCollisionHandler._cart.CartItemsContainer.LoseItems(amountOfItemsToLose);
         Debug.Log("Collision with other cart");
     }
 

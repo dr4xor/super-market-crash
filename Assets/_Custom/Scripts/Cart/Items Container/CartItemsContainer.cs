@@ -20,6 +20,7 @@ public class CartItemsContainer : MonoBehaviour
     [SerializeField] private float flyAwayAngularSpeed;
     [SerializeField] private float freezeVelocityThreshold = 0.5f;
     [SerializeField] private float timeForVelocityUnderThreshold = 0.5f;
+    [SerializeField] private Transform areaOutsideCart;
 
     private List<ItemFacade> _itemsInCart = new List<ItemFacade>();
     private List<float> _freezeItemsIn = new List<float>();
@@ -65,6 +66,8 @@ public class CartItemsContainer : MonoBehaviour
 
             setLayerRecursively(itemToLose.gameObject, LayerMask.NameToLayer("Default"));
         }
+
+        updatePlayerItemsInCartData();
     }
 
 
@@ -101,6 +104,7 @@ public class CartItemsContainer : MonoBehaviour
     private void Update()
     {
         handleFreezeItems();
+        checkIfItemsAreOutsideCart();
     }
 
     private void handleFreezeItems()
@@ -176,5 +180,26 @@ public class CartItemsContainer : MonoBehaviour
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireCube(areaItemLose.position, areaItemLose.localScale);
+
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireCube(areaOutsideCart.position, areaOutsideCart.localScale);
+    }
+
+    private void checkIfItemsAreOutsideCart()
+    {
+        for (int i = 0; i < _itemsInCart.Count; i++)
+        {
+            if (_freezeItemsIn[i] <= 0f)
+            {
+                continue;
+            }
+            
+            Vector3 localPos = areaItemLose.InverseTransformPoint(_itemsInCart[i].transform.position);
+            if (localPos.x < -0.5f || localPos.x > 0.5f || localPos.z < -0.5f || localPos.z > 0.5f)
+            {
+                _itemsInCart[i].transform.position = posOfItemToFlyTo.position;
+                _itemsInCart[i].GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
+            }
+        }
     }
 }

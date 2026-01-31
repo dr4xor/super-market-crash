@@ -15,12 +15,17 @@ public class CarCollisions : MonoBehaviour
         if (collision.rigidbody != null)
         {
             Cart cart = collision.rigidbody.GetComponent<Cart>();
+            ItemFacade itemFacade = collision.rigidbody.GetComponent<ItemFacade>();
 
             Debug.Log("Collision with other cart. Cart is null: " + (cart == null).ToString());
 
             if (cart != null)
             {
                 _cartCollisionHandler.CollisionWithOtherCart(cart.GetComponent<CartCollisionHandler>());
+            }
+            else if (itemFacade != null)
+            {
+
             }
             else
             {
