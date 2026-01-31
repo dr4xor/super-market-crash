@@ -32,8 +32,8 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        EnsureUIMainExists();
-        if (_uiMainInstance == null) return;
+        EnsureUIManagerExists();
+        if (_uiManagerInstance == null) return;
 
         int playerId = GetNextFreePlayerId();
         if (playerId < 0)
@@ -51,7 +51,7 @@ public class GameManager : MonoBehaviour
             player.SetShoppingList(shoppingList);
         }
 
-        var stats = _uiMainInstance.AddPlayer(player);
+        var stats = _uiManagerInstance.AddPlayer(player);
         if (stats != null)
             stats.SetPlayerName($"Player {playerId + 1}");
     }
@@ -68,8 +68,8 @@ public class GameManager : MonoBehaviour
 
         _usedPlayerIds[player.PlayerId] = false;
 
-        if (_uiMainInstance != null)
-            _uiMainInstance.RemovePlayer(player);
+        if (_uiManagerInstance != null)
+            _uiManagerInstance.RemovePlayer(player);
     }
 
     private void EnsureUIManagerExists()

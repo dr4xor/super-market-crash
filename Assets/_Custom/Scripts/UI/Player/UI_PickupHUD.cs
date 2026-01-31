@@ -66,12 +66,4 @@ public class UI_PickupHUD : MonoBehaviour
             _rectTransform.anchoredPosition = localPoint;
         }
     }
-
-    /// <summary>
-    /// Stops following the world transform. Call before destroying or when hiding.
-    /// </summary>
-    public void ClearTarget()
-    {
-        _worldFollowTarget = null;
-    }
 }
