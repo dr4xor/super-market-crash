@@ -8,6 +8,7 @@ using UnityEngine;
 public class PlayerShelfInteractor : MonoBehaviour
 {
     [SerializeField] private CartItemsContainer itemsContainer;
+    [SerializeField] private AudioClip clipCollectItem;
 
     private readonly HashSet<ShelfFacade> _shelvesInRange = new ();
     private ShelfFacade _closestShelf;
@@ -15,9 +16,20 @@ public class PlayerShelfInteractor : MonoBehaviour
     private UI_PickupHUD _pickupHud;
     private TweenerCore<float, float, FloatOptions> _tween;
 
+    private AudioSource _audioSource;
+
     private void Awake()
     {
         _player = GetComponent<Player>();
+        _audioSource = gameObject.AddComponent<AudioSource>();
+        _audioSource.clip = clipCollectItem;
+        _audioSource.playOnAwake = false;
+        _audioSource.volume = 1f;
+        _audioSource.spatialBlend = 1f;
+        _audioSource.rolloffMode = AudioRolloffMode.Logarithmic;
+        _audioSource.dopplerLevel = 0f;
+        _audioSource.minDistance = 5f;
+        _audioSource.maxDistance = 500f;
     }
 
     private void Update()
@@ -90,6 +102,8 @@ public class PlayerShelfInteractor : MonoBehaviour
     {
         if (_closestShelf && _closestShelf.HasItems)
         {
+
+            _audioSource.Play();
             _tween = DOTween.To(() => 0f, x => _pickupHud.SetProgress(x), 1f, 2f)
                 .SetEase(Ease.Linear)
                 .SetLink(_pickupHud.gameObject)
@@ -102,6 +116,7 @@ public class PlayerShelfInteractor : MonoBehaviour
                         {
                             Destroy(_pickupHud.gameObject);
                         }
+                        _audioSource.Stop();
                     }
                 });
         }
@@ -111,6 +126,7 @@ public class PlayerShelfInteractor : MonoBehaviour
     {
         if (_pickupHud)
         {
+            _audioSource.Stop();
             _tween.Kill();
             _pickupHud.SetProgress(0f);
         }

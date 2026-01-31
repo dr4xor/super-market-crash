@@ -6,6 +6,10 @@ public class CartCollisionHandler : MonoBehaviour
 {
     [SerializeField] private float minVelocityForHit = 8f;
     [SerializeField] private CartCrashConfig cartCrashConfig;
+    [SerializeField] private AudioSource audioSourceCartCollision;
+    [SerializeField] private AudioSource audioSourceHurtPlayer;
+    [SerializeField] private AudioClip clipCartCollision;
+    [SerializeField] private AudioClip[] clipHurtPlayer;
 
     private Cart _cart;
     private Rigidbody _rigidbody;
@@ -14,6 +18,7 @@ public class CartCollisionHandler : MonoBehaviour
     {
         _cart = GetComponent<Cart>();
         _rigidbody = GetComponent<Rigidbody>();
+        audioSourceCartCollision.clip = clipCartCollision;
     }
 
     public void CollisionWithOtherCart(CartCollisionHandler otherCartCollisionHandler)
@@ -31,6 +36,8 @@ public class CartCollisionHandler : MonoBehaviour
 
         Debug.Log("Cur self velocity: " + selfVelocity);
 
+        audioSourceCartCollision.Play();
+
         if (selfVelocity < minVelocityForHit)
         {
             return;
@@ -38,6 +45,11 @@ public class CartCollisionHandler : MonoBehaviour
 
 
         otherCartCollisionHandler._cart.CartShaker.ShakeDueToCrash();
+
+        otherCartCollisionHandler.audioSourceHurtPlayer.clip = clipHurtPlayer[Random.Range(0, clipHurtPlayer.Length)];
+        otherCartCollisionHandler.audioSourceHurtPlayer.Play();
+
+
 
 
         int amountOfItemsToLose = cartCrashConfig.ComputeAmountOfItemstoLose(
@@ -52,6 +64,9 @@ public class CartCollisionHandler : MonoBehaviour
     public void CollisionWithSomething()
     {
         _cart.ResetCurrentDashFactor();
+
+
+        audioSourceCartCollision.Play();
 
         float selfVelocity = _cart.MovingAverageVelocity.GetValueInPast(0.2f);
 
