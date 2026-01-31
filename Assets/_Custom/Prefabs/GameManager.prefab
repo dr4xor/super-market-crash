@@ -91,6 +91,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   itemDatabase: {fileID: 11400000, guid: 9702cb474f8344a259ffe409372c0821, type: 2}
+  characterDatabase: {fileID: 11400000, guid: 5b457668798144b45ac45c7f445ef5b1, type: 2}
   uiManagerPrefab: {fileID: 7243581334443092646, guid: 10f86382b8abb4198a77b92519a86a91, type: 3}
 --- !u!114 &3646436299274902654
 MonoBehaviour:
