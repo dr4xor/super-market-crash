@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour
     [Header("Prefabs")]
     [SerializeField] private UI_Main uiMainPrefab;
 
-    private UI_Main _uiMainInstance;
+    private UI_Manager _uiManagerInstance;
     private readonly bool[] _usedPlayerIds = new bool[4];
 
     private void Start()
@@ -98,7 +98,7 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Returns the runtime UI_Main instance (after Start has run), or null.
+    /// Returns the runtime UI_Manager instance (after Start has run), or null.
     /// </summary>
-    public UI_Main UIMain => _uiMainInstance;
+    public UI_Manager UIManager => _uiManagerInstance;
 }

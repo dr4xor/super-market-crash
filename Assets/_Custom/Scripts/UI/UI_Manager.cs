@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UI_Main : MonoBehaviour
+public class UI_Manager : MonoBehaviour
 {
-    public static UI_Main Instance { get; private set; }
+    public static UI_Manager Instance { get; private set; }
 
     [Header("References")]
     [SerializeField] private Transform playerStatsContainer;
