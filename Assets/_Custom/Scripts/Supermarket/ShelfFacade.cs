@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace Scripts.Supermarket
 {
-    public class ShelfController : MonoBehaviour
+    public class ShelfFacade : MonoBehaviour
     {
         [SerializeField] private Image image;
         [SerializeField] private List<Transform> shelfItemPositions;
@@ -28,7 +28,7 @@ namespace Scripts.Supermarket
             }
         }
         
-        public int RemainingItems => _shelfItems.Count;
+        public bool HasItems => _shelfItems.Any();
 
         public bool TryTakeItem(out ItemFacade item)
         {
