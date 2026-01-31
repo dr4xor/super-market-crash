@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4566958911861171981}
   - component: {fileID: 7981168250802962973}
   - component: {fileID: 5056788857089128235}
+  - component: {fileID: 3646436299274902654}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -91,3 +92,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   itemDatabase: {fileID: 11400000, guid: 9702cb474f8344a259ffe409372c0821, type: 2}
   uiManagerPrefab: {fileID: 7243581334443092646, guid: 10f86382b8abb4198a77b92519a86a91, type: 3}
+--- !u!114 &3646436299274902654
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3869935636490713289}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a13e6e691769e4a94be2c9885998db00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AudioManager
+  mainMenuMusic: {fileID: 8300000, guid: 8d22a7d71453d4b75ae08ccf9f79d735, type: 3}
+  gameplayMusic: {fileID: 8300000, guid: 8d22a7d71453d4b75ae08ccf9f79d735, type: 3}
+  musicCrossfadeDuration: 2
+  autoPlayMusicOnStart: 1
+  autoPlayMusicType: 1
+  audioMixer: {fileID: 24100000, guid: 6976c55a7ba5c42bca1eafd9c9870e31, type: 2}
+  musicVolumeParameter: MusicVolume
+  sfxVolumeParameter: SFXVolume
+  musicMixerGroup: {fileID: 1264209833691009094, guid: 6976c55a7ba5c42bca1eafd9c9870e31, type: 2}
+  sfxMixerGroup: {fileID: 8409986441143365132, guid: 6976c55a7ba5c42bca1eafd9c9870e31, type: 2}
+  musicVolume: 0.7
+  sfxVolume: 1
