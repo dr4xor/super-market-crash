@@ -22,15 +22,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6c74da68d933635479c15f613f05e064, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -7.882
+      value: -8.089
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6c74da68d933635479c15f613f05e064, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.00000017309384
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6c74da68d933635479c15f613f05e064, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -3.924
+      value: -3.726
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6c74da68d933635479c15f613f05e064, type: 3}
       propertyPath: m_LocalRotation.w
@@ -117,7 +117,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1cda48dca75c694d891ed741d6f54d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NPCController
-  isRestocker: 0
+  isRestocker: 1
   debugTarget: {fileID: 0}
   targetReachedDistance: 0.2
   minSpeedForRunningAnim: 0.25

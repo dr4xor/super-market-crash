@@ -10,27 +10,33 @@ namespace Scripts.Supermarket
     {
         [SerializeField] private Image image;
         [SerializeField] private List<Transform> shelfItemPositions;
-        [SerializeField] private  ItemFacade itemPrefab;
-        [SerializeField] private  Transform restockingPosition;
-        
+        [SerializeField] private ItemFacade itemPrefab;
+        [SerializeField] private Transform restockingPosition;
+
         public Transform hudPosition;
         public ItemTemplate itemTemplate;
         public int shelfItemCount;
-        
+
+
         private readonly List<ItemFacade> _shelfItems = new();
 
         public delegate void ShelfItemsChangeEvent(ShelfFacade shelf, List<ItemFacade> items);
         public event ShelfItemsChangeEvent OnShelfItemsChange;
 
         public Transform RestockingPosition => restockingPosition;
-        
+
+        private void Awake()
+        {
+            ShelfsManager.Instance.AddShelf(this);
+        }
+
         private void Start()
         {
             image.sprite = itemTemplate.sprite;
             Restock();
-            RestockingManager.Instance.AddShelf(this);
         }
-        
+
+
         public bool HasItems => _shelfItems.Any();
 
         public bool TryTakeItem(out ItemFacade item)
@@ -49,11 +55,13 @@ namespace Scripts.Supermarket
 
         public void Restock()
         {
+            Debug.Log("Restocking shelf: " + name);
             for (var i = 0; i < shelfItemCount; i++)
             {
                 var item = Instantiate(itemPrefab, shelfItemPositions[i].position, Quaternion.identity);
                 item.Init(itemTemplate);
                 _shelfItems.Add(item);
+                Debug.Log("Added item to shelf: " + item.name);
             }
         }
 

@@ -18,7 +18,6 @@ public class RestockingManager : MonoBehaviour
         }
     }
 
-    private List<ShelfFacade> _shelves = new();
     private List<NPCController> _restockers = new();
 
     private List<ShelfFacade> _shelvesScheduledForRestocking = new();
@@ -30,15 +29,17 @@ public class RestockingManager : MonoBehaviour
         _instance = this;
     }
 
+    private void Start()
+    {
+        for (int i = 0; i < ShelfsManager.Instance.Shelves.Count; i++)
+        {
+            ShelfsManager.Instance.Shelves[i].OnShelfItemsChange += OnShelfItemsChange;
+        }
+    }
+
     private void Update()
     {
         //checkForRestocking();
-    }
-
-    public void AddShelf(ShelfFacade shelf)
-    {
-        _shelves.Add(shelf);
-        shelf.OnShelfItemsChange += OnShelfItemsChange;
     }
 
     public void RegisterRestocker(NPCController restocker)
@@ -53,7 +54,7 @@ public class RestockingManager : MonoBehaviour
         {
             checkForRestocking();
         }
-        else if (newState == NPCState.AT_TARGET)
+        else if (newState == NPCState.GOING_TO_ORIGIN)
         {
             for (int i = 0; i < _npcsCurrentlyRestocking.Count; i++)
             {
@@ -75,6 +76,7 @@ public class RestockingManager : MonoBehaviour
         if (items.Count <= 0)
         {
             _shelvesScheduledForRestocking.Add(shelf);
+            checkForRestocking();
         }
     }
 
@@ -98,7 +100,7 @@ public class RestockingManager : MonoBehaviour
             _npcsCurrentlyRestocking.Add(restocker);
             _shelvesCurrentlyRestocking.Add(shelf);
             _shelvesScheduledForRestocking.Remove(shelf);
-            restocker.GoToTarget(shelf.RestockingPosition, 3f, "isRestocking");
+            restocker.GoToTarget(shelf.RestockingPosition, 3f, "isWaving");
         }
     }
 }

@@ -19,7 +19,7 @@ public class NPCController : MonoBehaviour
     private string _animParamAtTarget;
     private float _timeToStandingAtTarget;
     private float _timeSpentAtTarget;
-
+    private bool _isParamTrigger;
     private Animator _animator;
     private NavMeshAgent _navMeshAgent;
     private NPCState _currentState;
@@ -55,7 +55,7 @@ public class NPCController : MonoBehaviour
 
     private void Update()
     {
-        switch (_currentState)
+        switch (CurrentState)
         {
             case NPCState.AT_ORIGIN:
                 _animator.SetBool(animParamNameForRunning, false);
@@ -67,7 +67,7 @@ public class NPCController : MonoBehaviour
                 _animator.speed = animSpeedByVelocity.Evaluate(_navMeshAgent.velocity.magnitude);
                 if (_navMeshAgent.remainingDistance <= targetReachedDistance)
                 {
-                    _currentState = NPCState.AT_TARGET;
+                    CurrentState = NPCState.AT_TARGET;
                     playAnimationAtTarget(true);
                     _timeSpentAtTarget = 0f;
                 }
@@ -79,7 +79,7 @@ public class NPCController : MonoBehaviour
                 _animator.speed = 1f;
                 if (_timeSpentAtTarget >= _timeToStandingAtTarget)
                 {
-                    _currentState = NPCState.GOING_TO_ORIGIN;
+                    CurrentState = NPCState.GOING_TO_ORIGIN;
                     playAnimationAtTarget(false);
                     _navMeshAgent.SetDestination(_origin);
                 }
@@ -90,7 +90,7 @@ public class NPCController : MonoBehaviour
                 _animator.speed = animSpeedByVelocity.Evaluate(_navMeshAgent.velocity.magnitude);
                 if (_navMeshAgent.remainingDistance <= targetReachedDistance)
                 {
-                    _currentState = NPCState.AT_ORIGIN;
+                    CurrentState = NPCState.AT_ORIGIN;
                 }
                 _navMeshAgent.updateRotation = true;
                 break;
@@ -119,20 +119,28 @@ public class NPCController : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
     }
 
-    public void GoToTarget(Transform target, float timeToSpendAtTarget, string animParamAtTarget = "")
+    public void GoToTarget(Transform target, float timeToSpendAtTarget, string animParamAtTarget = "", bool isParamTrigger = false)
     {
         _curTarget = target;
-        _currentState = NPCState.GOING_TO_TARGET;
+        CurrentState = NPCState.GOING_TO_TARGET;
         _navMeshAgent.SetDestination(target.position);
         _timeToStandingAtTarget = timeToSpendAtTarget;
         _animParamAtTarget = animParamAtTarget;
+        _isParamTrigger = isParamTrigger;
     }
 
     private void playAnimationAtTarget(bool isAnimationPlaying)
     {
         if (!string.IsNullOrEmpty(_animParamAtTarget))
         {
-            _animator.SetBool(_animParamAtTarget, isAnimationPlaying);
+            if (_isParamTrigger)
+            {
+                _animator.SetTrigger(_animParamAtTarget);
+            }
+            else
+            {
+                _animator.SetBool(_animParamAtTarget, isAnimationPlaying);
+            }
         }
     }
 
