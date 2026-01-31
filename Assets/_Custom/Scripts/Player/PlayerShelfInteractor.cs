@@ -1,4 +1,3 @@
-using System;
 using DG.Tweening;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
@@ -21,11 +20,15 @@ public class PlayerShelfInteractor : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent(out _shelfInRange))
+        if (other.TryGetComponent(out ShelfFacade colliderShelf))
         {
-            if (!_pickupHud && _shelfInRange.HasItems)
+            _shelfInRange = colliderShelf;
+            if (_pickupHud)
             {
-                print(DateTime.Now.ToLongTimeString() + " Enter shelf");
+                Destroy(_pickupHud.gameObject);
+            }
+            if (_shelfInRange.HasItems)
+            {
                 _pickupHud = UI_Manager.Instance.SpawnPickupHUD(_shelfInRange.transform, _shelfInRange.itemTemplate.sprite, _player);
             }
         }
@@ -33,34 +36,31 @@ public class PlayerShelfInteractor : MonoBehaviour
     
     private void OnTriggerExit(Collider other)
     {
-        if (other.TryGetComponent(out _shelfInRange))
+        if (other.TryGetComponent(out ShelfFacade colliderShelf))
         {
-            print(DateTime.Now.ToLongTimeString() + " Exit shelf");
-            print(_pickupHud);
-            if (_pickupHud)
+            if (colliderShelf == _shelfInRange)
             {
-                Destroy(_pickupHud.gameObject);
-                print(DateTime.Now.ToLongTimeString() + " Destroyed");
-            }
+                if (_pickupHud)
+                {
+                    Destroy(_pickupHud.gameObject);
+                }
 
-            _shelfInRange = null;
+                _shelfInRange = null;
+            }
         }
     }
 
     public void OnInteract()
     {
-        print(DateTime.Now.ToLongTimeString() + " Interact");
         if (_shelfInRange && _shelfInRange.HasItems)
         {
-            _tween = DOTween.To(() => 0f, x => _pickupHud.SetProgress(x), 1f, 5f)
+            _tween = DOTween.To(() => 0f, x => _pickupHud.SetProgress(x), 1f, 2f)
                 .SetEase(Ease.Linear)
                 .SetLink(_pickupHud.gameObject)
                 .OnComplete(() =>
                 {
-                    print(DateTime.Now.ToLongTimeString() + " Take complete");
                     if (_shelfInRange.TryTakeItem(out var item))
                     {
-                        print(DateTime.Now.ToLongTimeString() + " Take success");
                         itemsContainer.AddItemToCart(item);
                         if (_shelfInRange.HasItems == false)
                         {
