@@ -5,11 +5,13 @@ public class PlayerInputReceiver : MonoBehaviour
 {
     private PlayerInput _playerInput;
     private Cart _cart;
+    private CartItemsContainer _cartItemsContainer;
     
     private void Start()
     {
         _playerInput = GetComponent<PlayerInput>();
         _cart = GetComponent<Cart>();
+        _cartItemsContainer = GetComponentInChildren<CartItemsContainer>();
     }
 
     private void OnInteract(InputValue inputValue)
@@ -31,17 +33,16 @@ public class PlayerInputReceiver : MonoBehaviour
 
     private void OnNorth(InputValue inputValue)
     {
-        
+        _cartItemsContainer.InstantiateAndAddItemToCart();
     }
 
     private void OnEast(InputValue inputValue)
     {
-        
     }
 
     private void OnWest(InputValue inputValue)
     {
-Debug.Log("OnWest");
+        Debug.Log("OnWest");
         _cart.PlayerAnimationController.GrabItem();
     }
 }

@@ -1,49 +1,59 @@
-using DG.Tweening;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class CartItemsContainer : MonoBehaviour
 {
+    [SerializeField] private GameObject prefabItemExample;
+    [SerializeField] private Transform spawnOfExampleItem;
+    [SerializeField] private Transform posOfItemToFlyTo;
+    [SerializeField] private AnimationCurve yHeightFlyCurve;
+    [SerializeField] private float flyTime = 0.5f;
+    [SerializeField] private Vector3 velocityWhenFlyingFinished = new Vector3(0f, -3f, 0f);
+    [SerializeField] private string layerOfItems;
 
-    [SerializeField] private float shakeDuration = 0.5f;
-    [SerializeField] private float shakeStrength = 0.1f;
-    [SerializeField] private int shakeVibrato = 10;
-    [SerializeField] private float shakeRandomness = 90f;
-    [SerializeField] private bool shakeFadeOut = false;
-    [SerializeField] private bool shakeIgnoreTimeScale = true;
-    [SerializeField] private float shakeRotationStrength = 10f;
-    [SerializeField] private int shakeRotationVibrato = 10;
-    [SerializeField] private float shakeRotationRandomness = 90f;
-    [SerializeField] private bool shakeRotationFadeOut = false;
-    [SerializeField] private bool shakeRotationIgnoreTimeScale = true;
-    [SerializeField] private float shakeScaleStrength = 0.1f;
-    [SerializeField] private int shakeScaleVibrato = 10;
-    [SerializeField] private float shakeScaleRandomness = 90f;
-    [SerializeField] private bool shakeScaleFadeOut = false;
-    [SerializeField] private bool shakeScaleIgnoreTimeScale = true;
+    private List<ItemFacade> _itemsInCart = new List<ItemFacade>();
 
-    private float _cooldown;
-
-    public void ShakeDueToCrash()
+    public void InstantiateAndAddItemToCart()
     {
-        if (_cooldown > 0f)
-        {
-            return;
-        }
+        GameObject goItem = Instantiate(prefabItemExample);
+        goItem.transform.position = spawnOfExampleItem.position;
+        AddItemToCart(goItem);
+    }   
+    
+    public void AddItemToCart(GameObject goItem)
+    {
+        setLayerRecursively(goItem, LayerMask.NameToLayer(layerOfItems));
+        goItem.GetComponent<Rigidbody>().isKinematic = true;
+        CartFlyingItem cartFlyingItem = goItem.AddComponent<CartFlyingItem>();
+        cartFlyingItem.StartFlying(flyTime, yHeightFlyCurve, posOfItemToFlyTo);
+        
+        cartFlyingItem.OnFlyingFinished += OnFlyingFinished;
+    }
 
-        transform.DOShakePosition(shakeDuration, shakeStrength, shakeVibrato, shakeRandomness, shakeFadeOut, shakeIgnoreTimeScale);
-        transform.DOShakeRotation(shakeDuration, shakeRotationStrength, shakeRotationVibrato, shakeRotationRandomness, shakeRotationFadeOut);
-        transform.DOShakeScale(shakeDuration, shakeScaleStrength, shakeScaleVibrato, shakeScaleRandomness, shakeScaleFadeOut);
+    private void OnFlyingFinished(CartFlyingItem cartFlyingItem)
+    {
+        Rigidbody rb = cartFlyingItem.GetComponent<Rigidbody>();
+        rb.isKinematic = false;
 
-        _cooldown = shakeDuration;
+        rb.linearVelocity = velocityWhenFlyingFinished;
+        _itemsInCart.Add(cartFlyingItem.GetComponent<ItemFacade>());
+
+        Destroy(cartFlyingItem);
+
+        Debug.Log("Flying finished");
     }
 
     private void Update()
     {
-        if (_cooldown <= 0f)
-        {
-            return;
-        }
+        
+    }
 
-        _cooldown -= Time.deltaTime;
+    private void setLayerRecursively(GameObject go, int layer)
+    {
+        go.layer = layer;
+        foreach (Transform child in go.transform)
+        {
+            setLayerRecursively(child.gameObject, layer);
+        }
     }
 }
