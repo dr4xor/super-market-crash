@@ -68,6 +68,7 @@ public class CartItemsContainer : MonoBehaviour
             _freezeItemsIn.RemoveAt(randomIndex);
 
             itemToLose.gameObject.AddComponent<Rigidbody>();
+            enableAllCollidersInChildren(itemToLose.gameObject, true);
             
             itemToLose.transform.position = getRandomPositionInArea();
             itemToLose.transform.parent = null;
@@ -140,6 +141,7 @@ public class CartItemsContainer : MonoBehaviour
                     _itemsInCart[i].transform.parent = transform;
                     _itemsInCart[i].GetComponent<Rigidbody>().isKinematic = true;
                     Destroy(_itemsInCart[i].GetComponent<Rigidbody>());
+                    enableAllCollidersInChildren(_itemsInCart[i].gameObject, false);
                 }
             }
             else
@@ -230,6 +232,14 @@ public class CartItemsContainer : MonoBehaviour
                 _itemsInCart[i].transform.position = posOfItemToFlyTo.position;
                 _itemsInCart[i].GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
             }
+        }
+    }
+
+    private void enableAllCollidersInChildren(GameObject go, bool colliderEnabled)
+    {
+        foreach (Collider collider in go.GetComponentsInChildren<Collider>())
+        {
+            collider.enabled = colliderEnabled;
         }
     }
 }
