@@ -205,6 +205,9 @@ MonoBehaviour:
   forceDashing: 8
   forceFactorBrakeDashing: 16
   maxSpeedDashing: 250
+  useButtonMashDash: 1
+  buttonMashMaxTimeBetweenPresses: 0.17
+  buttonMashMaxAccumulatedPresses: 10
 --- !u!114 &7522635338009481776
 MonoBehaviour:
   m_ObjectHideFlags: 0

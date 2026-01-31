@@ -1,4 +1,5 @@
 using System;
+using JetBrains.Annotations;
 using SappUnityUtils.Numbers;
 using UnityEngine;
 
@@ -16,6 +17,10 @@ public class Cart : MonoBehaviour
     [SerializeField] private float forceDashing = 2f;
     [SerializeField] private float forceFactorBrakeDashing = 2f;
     [SerializeField] private float maxSpeedDashing = 2f;
+    [Space]
+    [SerializeField] private bool useButtonMashDash;
+    [SerializeField] private float buttonMashMaxTimeBetweenPresses = 0.17f;
+    [SerializeField] private int buttonMashMaxAccumulatedPresses = 10;
 
     /*
     [Header("Movement")]
@@ -30,6 +35,11 @@ public class Cart : MonoBehaviour
     [SerializeField] private float _rotationFollowSpeed = 5f;
     */
 
+
+    /// Button mash dash
+    private int _accumulatedMashPresses = 0;
+    private float _timeSinceLastMashPress = 0f;
+    private bool _hasButtonMashBeenPressed = false;
 
     private Vector3 _moveInput;
     private Rigidbody _rigidbody;
@@ -113,10 +123,16 @@ public class Cart : MonoBehaviour
 
         //_rigidbody.position = new Vector3(_rigidbody.position.x, fixedYPosition, _rigidbody.position.z);
 
+        handleButtonMashDash();
     }
 
     private float handleDash()
     {
+        if (useButtonMashDash)
+        {
+            return _accumulatedMashPresses / ((float)buttonMashMaxAccumulatedPresses);
+        }
+
         if (!_isDashing)
         {
             return 0f;
@@ -136,8 +152,41 @@ public class Cart : MonoBehaviour
 
     public void PerformDash()
     {
-        _isDashing = true;
-        _dashS = 0f;
+        if (useButtonMashDash)
+        {
+            _hasButtonMashBeenPressed = true;
+        }
+        else
+        {
+            _isDashing = true;
+            _dashS = 0f;
+        }
+    }
+
+    private void handleButtonMashDash()
+    {
+        if (!useButtonMashDash)
+        {
+            return;
+        }
+
+        _timeSinceLastMashPress += Time.fixedDeltaTime;
+        if (_timeSinceLastMashPress > buttonMashMaxTimeBetweenPresses)
+        {
+            if (_hasButtonMashBeenPressed)
+            {
+                _accumulatedMashPresses++;
+                _hasButtonMashBeenPressed = false;
+            }
+            else
+            {
+                _accumulatedMashPresses -= 3;
+            }
+
+            _timeSinceLastMashPress -= buttonMashMaxTimeBetweenPresses;
+
+            _accumulatedMashPresses = Mathf.Clamp(_accumulatedMashPresses, 0, buttonMashMaxAccumulatedPresses);
+        }
     }
     /*
         private void performDriftMovement()

@@ -19,6 +19,8 @@ public class PlayerAnimationController : MonoBehaviour
 
     private void Update()
     {
+        fetchNewAnimatorIfDestroyed();
+
         float speed = _rigidbody.linearVelocity.magnitude;
 
         float animSpeed = velocityToAnimSpeedCurve.Evaluate(speed);
@@ -40,5 +42,13 @@ public class PlayerAnimationController : MonoBehaviour
 Debug.Log("GrabItem");
 
         _animator.SetTrigger(grabItemParam);
+    }
+
+    private void fetchNewAnimatorIfDestroyed()
+    {
+        if (_animator == null)
+        {
+            _animator = GetComponentInChildren<Animator>();
+        }
     }
 }
