@@ -1,3 +1,4 @@
+using ScriptableObjects;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -5,6 +6,7 @@ public class UI_PickupHUD : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private Slider progressSlider;
+    [SerializeField] private Image itemSprite;
     [SerializeField] private Image backgroundImage;
 
     [Header("World Follow")]
@@ -25,12 +27,16 @@ public class UI_PickupHUD : MonoBehaviour
     /// </summary>
     /// <param name="worldTransform">The transform in world space to follow (e.g. item or interaction point).</param>
     /// <param name="player">Optional. If set, applies the player's color to the background image.</param>
-    public void Initialize(Transform worldTransform, Player player = null)
+    /// <param name="item">Optional. If set, applies the item's sprite to the item image.</param>
+    public void Initialize(Transform worldTransform, ItemTemplate item = null, Player player = null)
     {
         _worldFollowTarget = worldTransform;
 
         if (backgroundImage != null && player != null)
             backgroundImage.color = player.Color;
+
+        if (itemSprite != null && item != null)
+            itemSprite.sprite = item.sprite;
 
         SetProgress(0f);
     }

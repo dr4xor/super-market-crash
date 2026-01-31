@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using ScriptableObjects;
 
 public class UI_Manager : MonoBehaviour
 {
@@ -68,15 +69,16 @@ public class UI_Manager : MonoBehaviour
     /// </summary>
     /// <param name="worldTransform">The transform in world space to follow (e.g. item or pickup point).</param>
     /// <param name="player">Optional. The player whose color is used for the HUD background.</param>
+    /// <param name="item">Optional. If set, applies the item's sprite to the item image.</param>
     /// <returns>The created UI_PickupHUD instance, or null if prefab not set.</returns>
-    public UI_PickupHUD SpawnPickupHUD(Transform worldTransform, Player player = null)
+    public UI_PickupHUD SpawnPickupHUD(Transform worldTransform, ItemTemplate item = null, Player player = null)
     {
         if (worldTransform == null || pickupHudPrefab == null)
             return null;
 
         Transform parent = pickupHudContainer != null ? pickupHudContainer : transform;
         var instance = Instantiate(pickupHudPrefab, parent);
-        instance.Initialize(worldTransform, player);
+        instance.Initialize(worldTransform, item, player);
         return instance;
     }
 

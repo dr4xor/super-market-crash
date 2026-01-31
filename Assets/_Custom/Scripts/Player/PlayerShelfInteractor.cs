@@ -30,7 +30,7 @@ public class PlayerShelfInteractor : MonoBehaviour
     {
         if (_shelfInRange && _shelfInRange.HasItems)
         {
-            _pickupHud = UI_Manager.Instance.SpawnPickupHUD(_shelfInRange.transform, _player);
+            _pickupHud = UI_Manager.Instance.SpawnPickupHUD(_shelfInRange.transform, _shelfInRange.itemTemplate, _player);
             var value = 0f;
             
             DOTween.To(() => 0f, x => _pickupHud.SetProgress(x), 1f, 1f)
