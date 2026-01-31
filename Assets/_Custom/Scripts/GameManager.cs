@@ -8,14 +8,14 @@ public class GameManager : MonoBehaviour
     [SerializeField] private ItemDatabase itemDatabase;
 
     [Header("Prefabs")]
-    [SerializeField] private UI_Main uiMainPrefab;
+    [SerializeField] private UI_Manager uiManagerPrefab;
 
     private UI_Manager _uiManagerInstance;
     private readonly bool[] _usedPlayerIds = new bool[4];
 
     private void Start()
     {
-        EnsureUIMainExists();
+        EnsureUIManagerExists();
     }
 
     /// <summary>
@@ -72,19 +72,19 @@ public class GameManager : MonoBehaviour
             _uiMainInstance.RemovePlayer(player);
     }
 
-    private void EnsureUIMainExists()
+    private void EnsureUIManagerExists()
     {
-        if (_uiMainInstance != null) return;
+        if (_uiManagerInstance != null) return;
 
-        if (uiMainPrefab == null)
+        if (uiManagerPrefab == null)
         {
-            Debug.LogWarning("GameManager: UI_Main prefab not set.");
+            Debug.LogWarning("GameManager: UI_Manager prefab not set.");
             return;
         }
 
-        _uiMainInstance = FindObjectOfType<UI_Main>();
-        if (_uiMainInstance == null)
-            _uiMainInstance = Instantiate(uiMainPrefab);
+        _uiManagerInstance = FindObjectOfType<UI_Manager>();
+        if (_uiManagerInstance == null)
+            _uiManagerInstance = Instantiate(uiManagerPrefab);
     }
 
     private int GetNextFreePlayerId()
