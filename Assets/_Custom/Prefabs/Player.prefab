@@ -84,6 +84,7 @@ GameObject:
   - component: {fileID: 4900942330372223374}
   - component: {fileID: 9057464639772078941}
   - component: {fileID: 8100277933657797801}
+  - component: {fileID: -2250659560049463426}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -304,6 +305,20 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   grabItemParam: isGrabbing
+--- !u!114 &-2250659560049463426
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6224988939651710230}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18e6a77285d24cf8b2f23ea196a6ce7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Player
+  playerId: 0
+  money: 100
 --- !u!1 &6512023204539800105
 GameObject:
   m_ObjectHideFlags: 0
