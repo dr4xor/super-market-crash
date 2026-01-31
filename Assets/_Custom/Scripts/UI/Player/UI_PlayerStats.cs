@@ -16,6 +16,11 @@ public class UI_PlayerStats : MonoBehaviour
     private Player _player;
     private readonly List<UI_ShoppingListItem> _listItems = new();
 
+    private void Update()
+    {
+        Refresh();
+    }
+
     /// <summary>
     /// Binds this panel to a player. Updates background color, money, and rebuilds the shopping list.
     /// </summary>

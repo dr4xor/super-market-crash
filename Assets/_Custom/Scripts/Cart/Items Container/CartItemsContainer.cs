@@ -19,6 +19,13 @@ public class CartItemsContainer : MonoBehaviour
     private List<ItemFacade> _itemsInCart = new List<ItemFacade>();
     private List<float> _freezeItemsIn = new List<float>();
 
+    private Player _player;
+
+    private void Start()
+    {
+        _player = GetComponentInParent<Player>();
+    }
+
     public void InstantiateAndAddItemToCart()
     {
         var goItem = Instantiate(prefabItemExample);
@@ -51,6 +58,8 @@ public class CartItemsContainer : MonoBehaviour
         _itemsInCart.Add(cartFlyingItem.GetComponent<ItemFacade>());
         _freezeItemsIn.Add(timeUntilFreezeItems);
 
+        updatePlayerItemsInCartData();
+
 
         Destroy(cartFlyingItem);
 
@@ -76,6 +85,22 @@ public class CartItemsContainer : MonoBehaviour
                     _itemsInCart[i].GetComponent<Rigidbody>().isKinematic = true;
                     Destroy(_itemsInCart[i].GetComponent<Rigidbody>());
                 }
+            }
+        }
+    }
+
+    private void updatePlayerItemsInCartData()
+    {
+        _player.ItemsInCart.Clear();
+        for (int i = 0; i < _itemsInCart.Count; i++)
+        {
+            if (_player.ItemsInCart.ContainsKey(_itemsInCart[i].ItemTemplate))
+            {
+                _player.ItemsInCart[_itemsInCart[i].ItemTemplate] += 1;
+            }
+            else
+            {
+                _player.ItemsInCart[_itemsInCart[i].ItemTemplate] = 1;
             }
         }
     }
