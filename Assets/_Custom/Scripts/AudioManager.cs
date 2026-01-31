@@ -27,9 +27,6 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioClip mainMenuMusic;
     [SerializeField] private AudioClip gameplayMusic;
     [SerializeField] [Min(0.1f)] private float musicCrossfadeDuration = 2f;
-    [Tooltip("If enabled, starts playing music when the game loads.")]
-    [SerializeField] private bool autoPlayMusicOnStart = true;
-    [SerializeField] private MusicType autoPlayMusicType = MusicType.Gameplay;
 
     [Header("Audio Mixer (optional)")]
     [Tooltip("Assign a mixer with Music and SFX groups. Expose volume parameters for runtime control.")]
@@ -47,7 +44,7 @@ public class AudioManager : MonoBehaviour
     private AudioSource _musicSourceA;
     private AudioSource _musicSourceB;
     private AudioSource _sfxSource;
-    private MusicType _currentMusicType = MusicType.MainMenu;
+    private MusicType? _currentMusicType = null;
     private bool _usingSourceA = true;
     private Coroutine _crossfadeRoutine;
 
@@ -100,9 +97,6 @@ public class AudioManager : MonoBehaviour
             _musicSourceB.volume = musicVolume;
             _sfxSource.volume = sfxVolume;
         }
-
-        if (autoPlayMusicOnStart)
-            PlayMusic(autoPlayMusicType);
     }
 
     private void OnDestroy()
