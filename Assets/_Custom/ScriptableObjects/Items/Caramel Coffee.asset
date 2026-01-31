@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee1d4a3e2897688469be870ef7e85864, type: 3}
+  m_Name: Caramel Coffee
+  m_EditorClassIdentifier: Assembly-CSharp::ScriptableObjects.ItemTemplate
+  itemName: Caramel Coffee
+  itemPrefab: {fileID: 6753754427846120235, guid: 68c3a9d2d6c745843b921c53da9c3239, type: 3}
+  sprite: {fileID: 21300000, guid: bc04e0dcf57bffb41bb7bdb787b0db90, type: 3}
+  price: 4
+  weight: 3

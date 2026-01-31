@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee1d4a3e2897688469be870ef7e85864, type: 3}
+  m_Name: Pizza Box
+  m_EditorClassIdentifier: Assembly-CSharp::ScriptableObjects.ItemTemplate
+  itemName: Pizza Box
+  itemPrefab: {fileID: 141768754927037107, guid: 65bc4f3a4ca20054bb9121fd2d300f03, type: 3}
+  sprite: {fileID: 21300000, guid: 397dda1967a313f42bdfd64593779067, type: 3}
+  price: 8
+  weight: 6

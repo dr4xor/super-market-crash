@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee1d4a3e2897688469be870ef7e85864, type: 3}
+  m_Name: Strawberry
+  m_EditorClassIdentifier: Assembly-CSharp::ScriptableObjects.ItemTemplate
+  itemName: Strawberry
+  itemPrefab: {fileID: 3094551926163112430, guid: ae066a78b26f6a24eb97d6cbd3b03aa0, type: 3}
+  sprite: {fileID: 21300000, guid: e66ec84bc377a2043913569783f26470, type: 3}
+  price: 2
+  weight: 1

@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee1d4a3e2897688469be870ef7e85864, type: 3}
+  m_Name: Strawberry Yogurt
+  m_EditorClassIdentifier: Assembly-CSharp::ScriptableObjects.ItemTemplate
+  itemName: Strawberry Yogurt
+  itemPrefab: {fileID: 4684286550472887850, guid: f7b4e5d67fa57e34b974939d50f71bc3, type: 3}
+  sprite: {fileID: 21300000, guid: 36ea98973f8983748ad39234643cac92, type: 3}
+  price: 3
+  weight: 3

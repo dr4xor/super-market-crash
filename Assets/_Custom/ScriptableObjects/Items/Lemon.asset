@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee1d4a3e2897688469be870ef7e85864, type: 3}
+  m_Name: Lemon
+  m_EditorClassIdentifier: Assembly-CSharp::ScriptableObjects.ItemTemplate
+  itemName: Lemon
+  itemPrefab: {fileID: 2319342909546838228, guid: 845d5464fd637d4479d8c79c186ae26b, type: 3}
+  sprite: {fileID: 21300000, guid: e9ff71a161d334d44914415b1ee3f7fc, type: 3}
+  price: 1
+  weight: 1
