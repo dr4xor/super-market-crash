@@ -21,6 +21,9 @@ public class CartCollisionHandler : MonoBehaviour
         float selfVelocity = _cart.MovingAverageVelocity.GetValueInPast(0.2f);
         float otherVelocity = otherCartCollisionHandler._cart.MovingAverageVelocity.GetValueInPast(0.2f);
 
+        _cart.ResetCurrentDashFactor();
+
+
         if (otherVelocity > selfVelocity)
         {
             return;
@@ -32,9 +35,11 @@ public class CartCollisionHandler : MonoBehaviour
         {
             return;
         }
-        
+
+
         otherCartCollisionHandler._cart.CartShaker.ShakeDueToCrash();
-        
+
+
         int amountOfItemsToLose = cartCrashConfig.ComputeAmountOfItemstoLose(
             otherCartCollisionHandler._cart.CartItemsContainer.ItemsInCart.Count,
             selfVelocity,
@@ -46,13 +51,15 @@ public class CartCollisionHandler : MonoBehaviour
 
     public void CollisionWithSomething()
     {
+        _cart.ResetCurrentDashFactor();
+
         float selfVelocity = _cart.MovingAverageVelocity.GetValueInPast(0.2f);
 
         int amountOfItemsToLose = cartCrashConfig.ComputeAmountOfItemstoLose(
             _cart.CartItemsContainer.ItemsInCart.Count,
             selfVelocity,
             false);
-
+        _cart.CartShaker.ShakeDueToCrash();
         _cart.CartItemsContainer.LoseItems(amountOfItemsToLose);
     }
 }

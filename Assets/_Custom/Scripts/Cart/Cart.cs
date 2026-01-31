@@ -89,7 +89,8 @@ public class Cart : MonoBehaviour
 
         _curDashFactor = Mathf.MoveTowards(_curDashFactor, dashFactor, Time.fixedDeltaTime * 4f);
 
-        Vector3 desiredVelocity = _moveInput * Mathf.Lerp(maxSpeed, maxSpeedDashing, dashFactor);
+        float curMaxSpeed = Mathf.Lerp(maxSpeed, maxSpeedDashing, dashFactor);
+        Vector3 desiredVelocity = _moveInput * curMaxSpeed;
 
         Vector3 forceDelta = desiredVelocity - _rigidbody.linearVelocity;
 
@@ -112,9 +113,9 @@ public class Cart : MonoBehaviour
 
         Vector3 currentVelocity = _rigidbody.linearVelocity;
         float currentSpeed = currentVelocity.magnitude;
-        if (currentSpeed > maxSpeed)
+        if (currentSpeed > curMaxSpeed)
         {
-            _rigidbody.linearVelocity = currentVelocity.normalized * maxSpeed;
+            _rigidbody.linearVelocity = currentVelocity.normalized * curMaxSpeed;
         }
 
         if (_moveInput.magnitude > 0.01f)
@@ -125,6 +126,8 @@ public class Cart : MonoBehaviour
 
             toRotate.rotation = Quaternion.RotateTowards(toRotate.rotation, targetRotation, rotationSpeed * Time.fixedDeltaTime);
         }
+
+        //Debug.Log("Current velocity: " + _rigidbody.linearVelocity.magnitude);
 
         _movingAverageVelocity.AddValue(_rigidbody.linearVelocity.magnitude);
 

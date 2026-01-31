@@ -45,6 +45,18 @@ PrefabInstance:
       value: FX_Cartoony_Sprint_01
       objectReference: {fileID: 0}
     - target: {fileID: 4988627667625658, guid: 414f21f548178584899720a59520163e, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4988627667625658, guid: 414f21f548178584899720a59520163e, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4988627667625658, guid: 414f21f548178584899720a59520163e, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4988627667625658, guid: 414f21f548178584899720a59520163e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
