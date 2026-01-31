@@ -6,7 +6,7 @@ using UnityEngine;
 public class PlayerShelfInteractor : MonoBehaviour
 {
     [SerializeField] private CartItemsContainer itemsContainer;
-    private ShelfFacade _shelfInRange = null;
+    private ShelfFacade _shelfInRange;
 
     private Player _player;
     private UI_PickupHUD _pickupHud;
@@ -18,42 +18,40 @@ public class PlayerShelfInteractor : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        print(other.name);
         _shelfInRange = other.GetComponent<ShelfFacade>();
+        if (_shelfInRange)
+        {
+            _pickupHud = UI_Manager.Instance.SpawnPickupHUD(_shelfInRange.transform, _shelfInRange.itemTemplate, _player);
+        }
     }
     
     private void OnTriggerExit(Collider other)
     {
+        if (_pickupHud)
+        {
+            Destroy(_pickupHud.gameObject);
+        }
         _shelfInRange = null;
     }
 
     public void OnInteract()
     {
+        print("Interact");
         if (_shelfInRange && _shelfInRange.HasItems)
         {
-            _pickupHud = UI_Manager.Instance.SpawnPickupHUD(_shelfInRange.transform, _shelfInRange.itemTemplate, _player);
-            var value = 0f;
-            
-            DOTween.To(() => 0f, x => _pickupHud.SetProgress(x), 1f, 1f)
+            DOTween.To(() => 0f, x => _pickupHud.SetProgress(x), 1f, 5f)
                 .SetEase(Ease.Linear)
                 .SetLink(_pickupHud.gameObject);
-            
-            // DOTween.To(() => value, x => value = x, 1f, 1f)
-            //     .OnUpdate(() =>
-            //     {
-            //         _pickupHud.SetProgress(value);
-            //     })
-            //     .OnComplete(() =>
-            //     {
-            //         if (_shelfInRange.TryTakeItem(out var item))
-            //         {
-            //             itemsContainer.AddItemToCart(item);
-            //         }
-            //     });
         }
     }
     
     public void OnInteractCancel()
     {
-        Destroy(_pickupHud.gameObject);
+        print("InteractCancel");
+        if (_pickupHud)
+        {
+            _pickupHud.SetProgress(0f);
+        }
     }
 }
