@@ -40,6 +40,7 @@ public class InGame : GameState
         }
 
         UI_Manager.Instance.Show(UI_Manager.UIType.PlayerStats);
+        UI_Manager.Instance.RefreshAllPlayers();
         UI_Manager.Instance.Hide(UI_Manager.UIType.MainMenu);
     }
 
