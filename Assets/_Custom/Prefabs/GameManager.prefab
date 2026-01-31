@@ -104,7 +104,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a13e6e691769e4a94be2c9885998db00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AudioManager
-  mainMenuMusic: {fileID: 8300000, guid: 8d22a7d71453d4b75ae08ccf9f79d735, type: 3}
+  mainMenuMusic: {fileID: 8300000, guid: e03598bafbeef414bacf901649654b59, type: 3}
   gameplayMusic: {fileID: 8300000, guid: 8d22a7d71453d4b75ae08ccf9f79d735, type: 3}
   musicCrossfadeDuration: 2
   autoPlayMusicOnStart: 0
