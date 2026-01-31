@@ -47,15 +47,15 @@ public class CartItemsContainer : MonoBehaviour
     {
         copyAllItemsInCartToBoughtItems();
 
+        for (int i = 0; i < _itemsInCart.Count; i++)
+        {
+            Destroy(_itemsInCart[i].gameObject, Random.Range(0.0f, 0.7f));
+        }
         _itemsInCart.Clear();
         _freezeItemsIn.Clear();
 
         updatePlayerItemsInCartData();
 
-        for (int i = 0; i < _itemsInCart.Count; i++)
-        {
-            Destroy(_itemsInCart[i].gameObject, Random.Range(0.0f, 0.7f));
-        }
     }
 
     public void LoseItems(int amountOfItemsToLose)

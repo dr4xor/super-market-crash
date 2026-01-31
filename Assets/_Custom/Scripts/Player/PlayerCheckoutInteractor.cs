@@ -25,7 +25,9 @@ public class PlayerCheckoutInteractor : MonoBehaviour
         if (other.TryGetComponent(out CheckoutFacade colliderCheckout))
         {
             _checkoutInRange = colliderCheckout;
-            if (!_pickupHud && itemsContainer.ItemsInCart.Count > 0)
+            if (!_pickupHud 
+                && itemsContainer.ItemsInCart.Count > 0 
+                && _checkoutInRange.cashier.CurrentState == NPCState.AT_ORIGIN)
             {
                 _pickupHud = UI_Manager.Instance.SpawnPickupHUD(_checkoutInRange.hudPosition, checkoutSprite, _player);
             }
