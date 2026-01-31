@@ -4,15 +4,21 @@ using ScriptableObjects;
 
 public class UI_Manager : MonoBehaviour
 {
+    public enum UIType { MainMenu, PlayerStats }
+
     public static UI_Manager Instance { get; private set; }
 
     [Header("References")]
     [SerializeField] private Transform playerStatsContainer;
     [SerializeField] private UI_PlayerStats playerStatsPrefab;
     [SerializeField] private UI_PickupHUD pickupHudPrefab;
+    [SerializeField] private UI_MainMenu mainMenuPrefab;
     [SerializeField] private Transform pickupHudContainer;
 
     private readonly Dictionary<Player, UI_PlayerStats> _playerStatsByPlayer = new();
+
+    //Instantiated instances
+    private UI_MainMenu _mainMenuInstance;
 
     private void Awake()
     {
@@ -80,6 +86,36 @@ public class UI_Manager : MonoBehaviour
         var instance = Instantiate(pickupHudPrefab, parent);
         instance.Initialize(worldTransform, sprite, player);
         return instance;
+    }
+
+    public void Show(UIType uiType)
+    {
+        switch (uiType)
+        {
+            case UIType.MainMenu:
+                if (mainMenuPrefab == null)
+                    return;
+                _mainMenuInstance = Instantiate(mainMenuPrefab, transform);
+                _mainMenuInstance.gameObject.SetActive(true);
+                break;
+            case UIType.PlayerStats:
+                playerStatsContainer.gameObject.SetActive(true);
+                break;
+        }
+    }
+
+    public void Hide(UIType uiType)
+    {
+        switch (uiType)
+        {
+            case UIType.MainMenu:
+                if (_mainMenuInstance != null)
+                    Destroy(_mainMenuInstance.gameObject);
+                break;
+            case UIType.PlayerStats:
+                playerStatsContainer.gameObject.SetActive(false);
+                break;
+        }
     }
 
     /// <summary>

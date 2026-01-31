@@ -21,10 +21,15 @@ public class MainMenu : GameState
             player.transform.DOMove(spawnPoint.position, TransitionDuration).SetEase(Ease.InOutQuad);
             player.transform.DORotateQuaternion(spawnPoint.rotation, TransitionDuration).SetEase(Ease.InOutQuad);
         }
+
+        UI_Manager.Instance.Hide(UI_Manager.UIType.PlayerStats);
+        UI_Manager.Instance.Show(UI_Manager.UIType.MainMenu);
     }
 
     public override void Exit()
     {
         Debug.Log("MainMenu: Exit");
+
+        UI_Manager.Instance.Hide(UI_Manager.UIType.MainMenu);
     }
 }

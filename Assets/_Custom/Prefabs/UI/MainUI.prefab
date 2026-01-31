@@ -119,6 +119,7 @@ MonoBehaviour:
   playerStatsContainer: {fileID: 7480204440742736971}
   playerStatsPrefab: {fileID: 3650538146636215557, guid: 522264d99be204beba792ef087df9439, type: 3}
   pickupHudPrefab: {fileID: 175997846772444906, guid: 49756343efdc34c1cbf872b572cb0cad, type: 3}
+  mainMenuPrefab: {fileID: 227215968812167279, guid: 4407bf253581d412d8bc30f40b804596, type: 3}
   pickupHudContainer: {fileID: 2667761560002226813}
 --- !u!1 &4826687225459506447
 GameObject:

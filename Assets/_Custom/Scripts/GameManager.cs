@@ -74,6 +74,13 @@ public class GameManager : MonoBehaviour
         currentState?.Enter();
     }
 
+    public void StartGame()
+    {
+        if (IsInGame) return;
+        
+        CurrentState = new InGame();
+    }
+
     /// <summary>
     /// Called by PlayerInputManager via SendMessage when Notification Behavior is set to SendMessages.
     /// </summary>
