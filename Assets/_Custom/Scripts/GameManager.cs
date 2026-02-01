@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private ItemDatabase itemDatabase;
     [SerializeField] private CharacterDatabase characterDatabase;
     [SerializeField] private GameObject[] playerCartPrefabs;
+    [SerializeField] private RenderTexture[] playerRenderTextures;
     public GameObject[] PlayerCartPrefabs => playerCartPrefabs;
 
     [Header("Prefabs")]
@@ -244,6 +245,11 @@ public class GameManager : MonoBehaviour
                 return true;
         }
         return false;
+    }
+
+    public RenderTexture GetPlayerRenderTexture(Player player)
+    {
+        return playerRenderTextures[player.PlayerId];
     }
 
 }

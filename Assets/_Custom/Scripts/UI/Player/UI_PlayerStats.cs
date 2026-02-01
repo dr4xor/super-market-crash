@@ -8,12 +8,12 @@ public class UI_PlayerStats : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private Image backgroundImage;
-    [SerializeField] private Image characterIconImage;
+    [SerializeField] private RawImage characterIconImage;
     [SerializeField] private TextMeshProUGUI moneyText;
     [SerializeField] private TextMeshProUGUI playerNameText;
     [SerializeField] private Transform shoppingListContainer;
     [SerializeField] private UI_ShoppingListItem shoppingListItemPrefab;
-
+    
     private Player _player;
     private readonly List<UI_ShoppingListItem> _listItems = new();
 
@@ -66,7 +66,7 @@ public class UI_PlayerStats : MonoBehaviour
 
         if (_player.SelectedCharacter != null)
         {
-            characterIconImage.sprite = _player.SelectedCharacter.icon;
+            characterIconImage.texture = GameManager.Instance.GetPlayerRenderTexture(_player);
             characterIconImage.enabled = true;
         }
         else

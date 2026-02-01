@@ -853,7 +853,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerCheckoutInteractor
   itemsContainer: {fileID: 1782204482793303468}
-  checkoutSprite: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
+  checkoutSprite: {fileID: 21300000, guid: 2c1321fe1158d40d58dfd86b1ed6f294, type: 3}
   timeToPickupItems: 4
 --- !u!1 &6435772829958725467
 GameObject:

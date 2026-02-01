@@ -363,6 +363,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1114797802953445137}
   - component: {fileID: 175997846772444906}
+  - component: {fileID: 5375770920390629554}
+  - component: {fileID: 5033989450418046099}
   m_Layer: 5
   m_Name: PickupHUD
   m_TagString: Untagged
@@ -380,11 +382,11 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 6969849490476203950}
-  - {fileID: 1605289787068796594}
   - {fileID: 6112082848480690865}
+  - {fileID: 1605289787068796594}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -410,6 +412,35 @@ MonoBehaviour:
   - {fileID: 1594780578833004393}
   - {fileID: 8110285322370585627}
   worldCamera: {fileID: 0}
+--- !u!111 &5375770920390629554
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3104573584088942943}
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Animation: {fileID: 7400000, guid: e2d210781ebab4d66a69eff5dde791fc, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: e2d210781ebab4d66a69eff5dde791fc, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_UpdateMode: 0
+  m_CullingType: 0
+--- !u!225 &5033989450418046099
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3104573584088942943}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &3240436214446594691
 GameObject:
   m_ObjectHideFlags: 0
@@ -792,7 +823,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 2887ac44c498d93448abafe93e8bdbd5, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 2c1321fe1158d40d58dfd86b1ed6f294, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
