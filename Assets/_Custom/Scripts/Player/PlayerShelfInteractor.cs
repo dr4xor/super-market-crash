@@ -13,7 +13,6 @@ public class PlayerShelfInteractor : MonoBehaviour
     [SerializeField] private float timeToPickupItems = 2f;
     [SerializeField] private PlayerShelfInRangeChecker playerShelfInRangeChecker;
 
-    private readonly HashSet<ShelfFacade> _shelvesInRange = new ();
     private ShelfFacade _closestShelf;
     private Player _player;
     private UI_PickupHUD _pickupHud;
@@ -46,13 +45,14 @@ public class PlayerShelfInteractor : MonoBehaviour
         ShelfFacade newClosest = null;
         var closestDistance = float.MaxValue;
 
-        foreach (var shelf in _shelvesInRange)
+        foreach (var shelf in playerShelfInRangeChecker.ShelvesInRange)
         {
             if (!shelf)
             {
                 continue;
             }
 
+            Debug.DrawLine(distanceCheckPosition.position, shelf.transform.position, Color.red);
             var distance = Vector3.Distance(distanceCheckPosition.position, shelf.transform.position);
             if (distance < closestDistance)
             {
@@ -83,22 +83,6 @@ public class PlayerShelfInteractor : MonoBehaviour
         if (_closestShelf && _closestShelf.HasItems)
         {
             _pickupHud = UI_Manager.Instance.SpawnPickupHUD(_closestShelf.hudPosition, _closestShelf.itemTemplate.sprite, _player);
-        }
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.TryGetComponent(out ShelfFacade colliderShelf))
-        {
-            _shelvesInRange.Add(colliderShelf);
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.TryGetComponent(out ShelfFacade colliderShelf))
-        {
-            _shelvesInRange.Remove(colliderShelf);
         }
     }
 
