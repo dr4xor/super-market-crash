@@ -9,6 +9,7 @@ public class PlayerShelfInteractor : MonoBehaviour
 {
     [SerializeField] private CartItemsContainer itemsContainer;
     [SerializeField] private AudioClip clipCollectItem;
+    [SerializeField] private Transform distanceCheckPosition;
 
     private readonly HashSet<ShelfFacade> _shelvesInRange = new ();
     private ShelfFacade _closestShelf;
@@ -49,7 +50,7 @@ public class PlayerShelfInteractor : MonoBehaviour
                 continue;
             }
 
-            var distance = Vector3.Distance(transform.position, shelf.transform.position);
+            var distance = Vector3.Distance(distanceCheckPosition.position, shelf.transform.position);
             if (distance < closestDistance)
             {
                 closestDistance = distance;
