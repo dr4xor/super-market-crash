@@ -107,6 +107,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 2060084320454683918}
   - {fileID: 1016149757827805133}
   - {fileID: 3034339217956801863}
   - {fileID: 7972097982531263733}
@@ -119,6 +120,74 @@ Transform:
   - {fileID: 820938364388695037}
   m_Father: {fileID: 8133013252121077013}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3420056226118582443
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2060084320454683918}
+  - component: {fileID: 5494200578054356836}
+  - component: {fileID: 6345494930178644438}
+  m_Layer: 0
+  m_Name: ShelvesInRangeChecker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2060084320454683918
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3420056226118582443}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 9165738597179673451}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5494200578054356836
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3420056226118582443}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e02baf6df9e4219a8f28292942d3f2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerShelfInRangeChecker
+--- !u!136 &6345494930178644438
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3420056226118582443}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.71
+  m_Height: 2.63
+  m_Direction: 2
+  m_Center: {x: 0, y: 0.56, z: -0.36}
 --- !u!1 &3504666410994297394
 GameObject:
   m_ObjectHideFlags: 0
@@ -802,6 +871,7 @@ MonoBehaviour:
   clipCollectItem: {fileID: 8300000, guid: 7acac16fcdd240b4ebf5245b3c9aa3fa, type: 3}
   distanceCheckPosition: {fileID: 820938364388695037}
   timeToPickupItems: 1.2
+  playerShelfInRangeChecker: {fileID: 5494200578054356836}
 --- !u!114 &7601734871157741964
 MonoBehaviour:
   m_ObjectHideFlags: 0

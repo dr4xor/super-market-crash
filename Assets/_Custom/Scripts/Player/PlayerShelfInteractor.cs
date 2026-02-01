@@ -11,6 +11,7 @@ public class PlayerShelfInteractor : MonoBehaviour
     [SerializeField] private AudioClip clipCollectItem;
     [SerializeField] private Transform distanceCheckPosition;
     [SerializeField] private float timeToPickupItems = 2f;
+    [SerializeField] private PlayerShelfInRangeChecker playerShelfInRangeChecker;
 
     private readonly HashSet<ShelfFacade> _shelvesInRange = new ();
     private ShelfFacade _closestShelf;
@@ -33,7 +34,6 @@ public class PlayerShelfInteractor : MonoBehaviour
         _audioSource.dopplerLevel = 0f;
         _audioSource.minDistance = 5f;
         _audioSource.maxDistance = 500f;
-        _playerAnimationController = GetComponent<PlayerAnimationController>();
     }
 
     private void Update()
