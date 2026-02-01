@@ -5,6 +5,7 @@ public class PlayerAnimationController : MonoBehaviour
     [SerializeField] private float runningSpeedThreshold = 1f;
     [SerializeField] private string isRunningParamName = "isRunning";
     [SerializeField] private AnimationCurve velocityToAnimSpeedCurve;
+    [SerializeField] private PlayerMeshBlinker playerMeshBlinker;
     [Space]
     [SerializeField] private string grabItemParam = "isGrabbing";
 
@@ -50,5 +51,11 @@ Debug.Log("GrabItem");
         {
             _animator = GetComponentInChildren<Animator>();
         }
+    }
+
+    public void PlayBeingHitAnimation()
+    {
+        _animator.SetTrigger("jump");
+        playerMeshBlinker.StartBlinking();
     }
 }

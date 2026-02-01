@@ -21,6 +21,7 @@ public class CartItemsContainer : MonoBehaviour
     [SerializeField] private float freezeVelocityThreshold = 0.5f;
     [SerializeField] private float timeForVelocityUnderThreshold = 0.5f;
     [SerializeField] private Transform areaOutsideCart;
+    [SerializeField] private Transform areaInsideCart;
 
     private List<ItemFacade> _itemsInCart = new List<ItemFacade>();
     private List<float> _freezeItemsIn = new List<float>();
@@ -130,11 +131,27 @@ public class CartItemsContainer : MonoBehaviour
         checkIfItemsAreOutsideCart();
     }
 
+    private void FixedUpdate()
+    {
+        for (int i = 0; i < _freezeItemsIn.Count; i++)
+        {
+            // Is already freezed
+            if (_freezeItemsIn[i] <= 0f)
+            {
+                continue;
+            }
+    
+            Vector3 localPos = areaInsideCart.InverseTransformPoint(_itemsInCart[i].transform.position);
+            localPos = new Vector3(Mathf.Clamp(localPos.x, -0.5f, 0.5f), localPos.y, Mathf.Clamp(localPos.z, -0.5f, 0.5f));
+            _itemsInCart[i].transform.position = areaInsideCart.TransformPoint(localPos);
+        }
+    }
+
     private void handleFreezeItems()
     {
         for (int i = 0; i < _freezeItemsIn.Count; i++)
         {
-            /// Is already freezed
+            // Is already freezed
             if (_freezeItemsIn[i] <= 0f)
             {
                 continue;
@@ -222,6 +239,9 @@ public class CartItemsContainer : MonoBehaviour
 
         Gizmos.color = Color.blue;
         Gizmos.DrawWireCube(areaOutsideCart.position, areaOutsideCart.localScale);
+
+        Gizmos.color = Color.green;
+        Gizmos.DrawCube(areaInsideCart.position, areaInsideCart.localScale);
     }
 
     private void checkIfItemsAreOutsideCart()

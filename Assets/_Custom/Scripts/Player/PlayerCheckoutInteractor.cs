@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using DG.Tweening;
 using DG.Tweening.Core;
@@ -9,6 +10,7 @@ public class PlayerCheckoutInteractor : MonoBehaviour
 {
     [SerializeField] private CartItemsContainer itemsContainer;
     [SerializeField] private Sprite checkoutSprite;
+    [SerializeField] private float timeToPickupItems = 2f;
     
     private CheckoutFacade _checkoutInRange;
     private Player _player;
@@ -32,12 +34,34 @@ public class PlayerCheckoutInteractor : MonoBehaviour
                 _pickupHud = UI_Manager.Instance.SpawnPickupHUD(_checkoutInRange.hudPosition, checkoutSprite, _player);
             }
         }
+
+        if (_checkoutInRange != null
+            && _checkoutInRange.cashier != null)
+        {
+            _checkoutInRange.cashier.OnStateChanged += OnCashierStateChanged;
+        }
     }
-    
+
+    private void OnCashierStateChanged(NPCController npc, NPCState newState)
+    {
+        if (newState == NPCState.AT_ORIGIN)
+        {
+            if (!_pickupHud 
+                && itemsContainer.ItemsInCart.Count > 0)
+            {
+                _pickupHud = UI_Manager.Instance.SpawnPickupHUD(_checkoutInRange.hudPosition, checkoutSprite, _player);
+            }
+        }
+    }
+
     private void OnTriggerExit(Collider other)
     {
         if (other.TryGetComponent(out CheckoutFacade _))
         {
+            if (_checkoutInRange.cashier != null)
+            {
+                _checkoutInRange.cashier.OnStateChanged -= OnCashierStateChanged;
+            }
             _checkoutInRange = null;
             if (_pickupHud)
             {
@@ -50,7 +74,7 @@ public class PlayerCheckoutInteractor : MonoBehaviour
     {
         if (_checkoutInRange)
         {
-            _tween = DOTween.To(() => 0f, x => _pickupHud.SetProgress(x), 1f, 2f)
+            _tween = DOTween.To(() => 0f, x => _pickupHud.SetProgress(x), 1f, timeToPickupItems)
                 .SetEase(Ease.Linear)
                 .SetLink(_pickupHud.gameObject)
                 .OnComplete(() =>

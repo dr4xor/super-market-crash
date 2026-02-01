@@ -45,6 +45,11 @@ namespace Scripts.Supermarket
                 shelfItemCount = Random.Range(2, 8);
             }
 
+            if (shelfItemCount > shelfItemPositions.Count)
+            {
+                shelfItemCount = shelfItemPositions.Count;
+            }
+
             image.sprite = itemTemplate.sprite;
             Restock();
         }

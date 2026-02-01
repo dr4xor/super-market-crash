@@ -9,6 +9,7 @@ public class PlayerShelfInteractor : MonoBehaviour
 {
     [SerializeField] private CartItemsContainer itemsContainer;
     [SerializeField] private AudioClip clipCollectItem;
+    [SerializeField] private float timeToPickupItems = 2f;
 
     private readonly HashSet<ShelfFacade> _shelvesInRange = new ();
     private ShelfFacade _closestShelf;
@@ -17,6 +18,7 @@ public class PlayerShelfInteractor : MonoBehaviour
     private TweenerCore<float, float, FloatOptions> _tween;
 
     private AudioSource _audioSource;
+    private PlayerAnimationController _playerAnimationController;
 
     private void Awake()
     {
@@ -30,6 +32,7 @@ public class PlayerShelfInteractor : MonoBehaviour
         _audioSource.dopplerLevel = 0f;
         _audioSource.minDistance = 5f;
         _audioSource.maxDistance = 500f;
+        _playerAnimationController = GetComponent<PlayerAnimationController>();
     }
 
     private void Update()
@@ -102,9 +105,9 @@ public class PlayerShelfInteractor : MonoBehaviour
     {
         if (_closestShelf && _closestShelf.HasItems)
         {
-
+            _playerAnimationController.GrabItem();
             _audioSource.Play();
-            _tween = DOTween.To(() => 0f, x => _pickupHud.SetProgress(x), 1f, 2f)
+            _tween = DOTween.To(() => 0f, x => _pickupHud.SetProgress(x), 1f, timeToPickupItems)
                 .SetEase(Ease.Linear)
                 .SetLink(_pickupHud.gameObject)
                 .OnComplete(() =>

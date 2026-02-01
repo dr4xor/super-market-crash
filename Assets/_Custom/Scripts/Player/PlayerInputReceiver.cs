@@ -92,7 +92,7 @@ public class PlayerInputReceiver : MonoBehaviour
             return;
         }
 
-        _cart.PlayerAnimationController.GrabItem();
+        //_cart.PlayerAnimationController.GrabItem();
     }
 
     private void OnEastUp(InputAction.CallbackContext context)
