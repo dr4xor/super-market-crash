@@ -24,12 +24,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 375555790927912132}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.032, z: 1.649}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.032, z: 0.6270001}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 4785149967891731385}
+  m_Father: {fileID: 9165738597179673451}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2476220516595236408
 GameObject:
@@ -40,6 +40,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3034339217956801863}
+  - component: {fileID: 5226951250516931264}
   m_Layer: 0
   m_Name: Character Pivot
   m_TagString: Untagged
@@ -63,6 +64,20 @@ Transform:
   - {fileID: 7750729300766066317}
   m_Father: {fileID: 9165738597179673451}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5226951250516931264
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2476220516595236408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9278531116c04843abac02d257fd303, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerMeshBlinker
+  blinkDuration: 1.5
+  blinkInterval: 0.2
 --- !u!1 &2663092987818151851
 GameObject:
   m_ObjectHideFlags: 0
@@ -101,6 +116,7 @@ Transform:
   - {fileID: 7053329580396130326}
   - {fileID: 8390085016798288143}
   - {fileID: 5328122291714186394}
+  - {fileID: 820938364388695037}
   m_Father: {fileID: 8133013252121077013}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3504666410994297394
@@ -515,7 +531,6 @@ Transform:
   m_Children:
   - {fileID: 8133013252121077013}
   - {fileID: 6364011928195879993}
-  - {fileID: 820938364388695037}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5427420133817516522
@@ -752,6 +767,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  playerMeshBlinker: {fileID: 5226951250516931264}
   grabItemParam: isGrabbing
 --- !u!114 &-2250659560049463426
 MonoBehaviour:
@@ -785,6 +801,7 @@ MonoBehaviour:
   itemsContainer: {fileID: 1782204482793303468}
   clipCollectItem: {fileID: 8300000, guid: 7acac16fcdd240b4ebf5245b3c9aa3fa, type: 3}
   distanceCheckPosition: {fileID: 820938364388695037}
+  timeToPickupItems: 1.2
 --- !u!114 &7601734871157741964
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -837,6 +854,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerCheckoutInteractor
   itemsContainer: {fileID: 1782204482793303468}
   checkoutSprite: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
+  timeToPickupItems: 4
 --- !u!1 &6435772829958725467
 GameObject:
   m_ObjectHideFlags: 0
