@@ -40,7 +40,7 @@ public class PlayerAnimationController : MonoBehaviour
 
     public void GrabItem()
     {
-Debug.Log("GrabItem");
+        Debug.Log("GrabItem");
 
         _animator.SetTrigger(grabItemParam);
     }

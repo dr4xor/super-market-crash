@@ -165,7 +165,7 @@ public class CartItemsContainer : MonoBehaviour
                     _itemsInCart[i].transform.parent = transform;
                     _itemsInCart[i].GetComponent<Rigidbody>().isKinematic = true;
                     Destroy(_itemsInCart[i].GetComponent<Rigidbody>());
-                    enableAllCollidersInChildren(_itemsInCart[i].gameObject, false);
+                    //enableAllCollidersInChildren(_itemsInCart[i].gameObject, false);
                 }
             }
             else
@@ -253,7 +253,7 @@ public class CartItemsContainer : MonoBehaviour
                 continue;
             }
             
-            Vector3 localPos = areaItemLose.InverseTransformPoint(_itemsInCart[i].transform.position);
+            Vector3 localPos = areaOutsideCart.InverseTransformPoint(_itemsInCart[i].transform.position);
             if (localPos.x < -0.5f || localPos.x > 0.5f || localPos.z < -0.5f || localPos.z > 0.5f)
             {
                 _itemsInCart[i].transform.position = posOfItemToFlyTo.position;
