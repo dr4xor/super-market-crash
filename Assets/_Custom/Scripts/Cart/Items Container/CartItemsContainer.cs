@@ -62,6 +62,11 @@ public class CartItemsContainer : MonoBehaviour
     {
         for (int i = 0; i < amountOfItemsToLose; i++)
         {
+            if (_itemsInCart.Count <= 0)
+            {
+                break;
+            }
+
             int randomIndex = Random.Range(0, _itemsInCart.Count);
             ItemFacade itemToLose = _itemsInCart[randomIndex];  
             _itemsInCart.RemoveAt(randomIndex);

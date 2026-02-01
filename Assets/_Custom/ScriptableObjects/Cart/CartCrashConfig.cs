@@ -8,6 +8,10 @@ namespace ScriptableObjects
         public AnimationCurve speedDiffToDamageCurve;
         public AnimationCurve itemsCountToVulnerabilityCurve;
         public float reductionIfNotAgainstOtherCart = 0.5f;
+        [Space]
+        [Header("Cashier")]
+        public AnimationCurve cashierDamageBySpeed;
+        public float minCashierSpeedForDamage = 1f;
 
         public int ComputeAmountOfItemstoLose(int itemsInCart, float speedDiff, bool isAgainstOtherCart)
         {
@@ -24,6 +28,15 @@ namespace ScriptableObjects
                 Debug.Log("Cart collision with something. Speed diff: " + speedDiff + ", vulnerability: " + vulnerability + ", amount of items to lose: " + amountOfItemsToLose);
             }
             
+            
+            return Mathf.RoundToInt(amountOfItemsToLose);
+        }
+
+        public int ComputeAmountOfItemsToLoseForCashier(int itemsInCart, float speed)
+        {
+            float damage = cashierDamageBySpeed.Evaluate(speed);
+            float vulnerability = itemsCountToVulnerabilityCurve.Evaluate(itemsInCart);
+            float amountOfItemsToLose = damage * vulnerability;
             
             return Mathf.RoundToInt(amountOfItemsToLose);
         }

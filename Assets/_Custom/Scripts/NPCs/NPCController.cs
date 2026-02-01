@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using SappUnityUtils.Numbers;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -41,6 +42,9 @@ public class NPCController : MonoBehaviour
             OnStateChanged?.Invoke(this, value);
         }
     }
+
+    private MovingAverage<float> _velocityMovingAverage = new MovingAverage<float>(64);
+    public MovingAverage<float> VelocityMovingAverage => _velocityMovingAverage;
 
     public delegate void StateChangedEvent(NPCController npc, NPCState newState);
     public event StateChangedEvent OnStateChanged;
@@ -102,6 +106,7 @@ public class NPCController : MonoBehaviour
                 break;
         }
 
+        _velocityMovingAverage.AddValue(_navMeshAgent.velocity.magnitude);
     }
 
     private void rotateTowardsTarget(Quaternion targetRotation)

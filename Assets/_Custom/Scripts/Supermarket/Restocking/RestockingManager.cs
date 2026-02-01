@@ -101,6 +101,8 @@ public class RestockingManager : MonoBehaviour
             _shelvesCurrentlyRestocking.Add(shelf);
             _shelvesScheduledForRestocking.Remove(shelf);
             restocker.GoToTarget(shelf.RestockingPosition, 3f, "isWaving");
+
+            return;
         }
     }
 }

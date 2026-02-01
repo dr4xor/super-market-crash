@@ -77,4 +77,14 @@ public class CartCollisionHandler : MonoBehaviour
         _cart.CartShaker.ShakeDueToCrash();
         _cart.CartItemsContainer.LoseItems(amountOfItemsToLose);
     }
+
+    public void CollisionWithCashier(NPCController npc)
+    {
+        int amountOfItemsToLose = cartCrashConfig.ComputeAmountOfItemsToLoseForCashier(
+            _cart.CartItemsContainer.ItemsInCart.Count, 
+            npc.VelocityMovingAverage.GetValueInPast(0.1f));
+
+        _cart.CartItemsContainer.LoseItems(amountOfItemsToLose);
+        _cart.CartShaker.ShakeDueToCrash();
+    }
 }

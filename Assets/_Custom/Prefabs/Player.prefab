@@ -681,6 +681,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dab9a478a0649dc4c8c35c18dca8390e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CarCollisions
+  cartCrashConfig: {fileID: 11400000, guid: 4853757faa6b6f84b96ef0137f6bec1c, type: 2}
 --- !u!114 &8100277933657797801
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -892,7 +893,7 @@ Transform:
   m_GameObject: {fileID: 6512023204539800105}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.675, z: -0.744}
+  m_LocalPosition: {x: 0, y: 0.675, z: -0.25299996}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1133,7 +1134,7 @@ Transform:
   m_GameObject: {fileID: 6675116904507493769}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.675, z: -1.481}
+  m_LocalPosition: {x: 0, y: 0.675, z: -0.9899999}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1374,7 +1375,7 @@ Transform:
   m_GameObject: {fileID: 8311967272255996061}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.675, z: 0}
+  m_LocalPosition: {x: 0, y: 0.675, z: 0.491}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

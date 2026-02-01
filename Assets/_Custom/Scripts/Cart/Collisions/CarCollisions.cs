@@ -1,8 +1,11 @@
+using ScriptableObjects;
 using Scripts.Supermarket;
 using UnityEngine;
 
 public class CarCollisions : MonoBehaviour
 {
+    [SerializeField] private CartCrashConfig cartCrashConfig;
+
     private CartCollisionHandler _cartCollisionHandler;
 
     private void Start()
@@ -32,7 +35,18 @@ public class CarCollisions : MonoBehaviour
         }
         else
         {
-            _cartCollisionHandler.CollisionWithSomething();
+
+            NPCController npc = collision.collider.GetComponent<NPCController>();
+
+            if (npc != null
+                && npc.VelocityMovingAverage.GetValueInPast(0.1f) > cartCrashConfig.minCashierSpeedForDamage)
+            {
+                _cartCollisionHandler.CollisionWithCashier(npc);
+            }
+            else
+            {
+                _cartCollisionHandler.CollisionWithSomething();
+            }
         }
     }
 }
