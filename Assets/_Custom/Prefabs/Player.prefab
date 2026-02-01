@@ -784,7 +784,7 @@ MonoBehaviour:
   playerId: 0
   money: 100
   cartParentTransform: {fileID: 1016149757827805133}
-  selectedCharacter: {fileID: 0}
+  selectedCharacter: {fileID: 11400000, guid: 6c64a89a788848f291ceedee2edb6de3, type: 2}
   selectedSkinIndex: 0
 --- !u!114 &4154173942793615091
 MonoBehaviour:
